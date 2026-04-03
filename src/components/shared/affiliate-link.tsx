@@ -4,20 +4,11 @@ interface AffiliateLinkProps {
   className?: string;
 }
 
-export default function AffiliateLink({
-  href,
-  children,
-  className,
-}: AffiliateLinkProps) {
+export default function AffiliateLink({ href, children, className }: AffiliateLinkProps) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer sponsored"
-      className={className}
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer sponsored" className={className}>
       {children}
-      <span className="inline-block ml-1 text-[9px] px-1 py-0.5 rounded-full bg-pink-100 text-pink-400 align-middle font-medium">
+      <span className="inline-block ml-0.5 text-[9px] px-1 py-px rounded bg-accent-light text-accent font-medium align-middle">
         AD
       </span>
     </a>

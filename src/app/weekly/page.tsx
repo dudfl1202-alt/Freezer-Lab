@@ -4,50 +4,11 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Header from "@/components/layout/header";
 import BottomNav from "@/components/layout/bottom-nav";
-import Mascot from "@/components/shared/mascot";
 import { weeklyPlans } from "@/data/weekly-plans";
 import { formatPrice, formatTime } from "@/lib/utils";
 import { WeeklyPlan, Recipe } from "@/types";
 
-function PrepChecklist({ plan }: { plan: WeeklyPlan }) {
-  return (
-    <div className="bg-gradient-to-br from-lavender-50 to-pink-50 rounded-3xl p-4 mb-4">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-bold text-txt-primary">
-          &#128203; 일요일 준비 체크리스트
-        </h3>
-        <span className="text-xs text-txt-light bg-white/60 px-2 py-0.5 rounded-full">
-          총 {formatTime(plan.prepDay.totalTime)}
-        </span>
-      </div>
-      <ol className="space-y-4">
-        {plan.prepDay.tasks.map((task) => (
-          <li key={task.order} className="flex gap-3 items-start">
-            <span className="shrink-0 w-7 h-7 rounded-full bg-lavender-200 text-lavender-600 text-xs flex items-center justify-center font-bold mt-0.5">
-              {task.order}
-            </span>
-            <div className="flex-1">
-              <p className="text-sm text-txt-primary leading-relaxed">
-                {task.instruction}
-              </p>
-              <span className="text-[10px] text-txt-light mt-1 block">
-                &#9201; {formatTime(task.duration)}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
-function ResultRecipes({
-  plan,
-  recipesMap,
-}: {
-  plan: WeeklyPlan;
-  recipesMap: Record<string, Recipe>;
-}) {
+function ResultRecipes({ plan, recipesMap }: { plan: WeeklyPlan; recipesMap: Record<string, Recipe> }) {
   const recipeIds = useMemo(() => {
     const ids = new Set<string>();
     plan.prepDay.tasks.forEach((t) => ids.add(t.recipeId));
@@ -56,37 +17,29 @@ function ResultRecipes({
 
   return (
     <div className="mb-4">
-      <h3 className="text-sm font-bold text-txt-primary mb-3">
-        &#127857; 완성되는 메뉴
-      </h3>
+      <p className="section-title mb-2.5">완성되는 메뉴</p>
       <div className="space-y-2">
         {recipeIds.map((id) => {
           const recipe = recipesMap[id];
           if (!recipe) return null;
           return (
-            <Link key={id} href={`/recipe/${id}`}>
-              <div className="bg-white rounded-2xl border border-lavender-100 p-3 flex items-center gap-3 hover:shadow-cute transition-all active:scale-[0.98] mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-lavender-50 to-pink-50 flex items-center justify-center text-xl">
+            <Link key={id} href={`/recipe/${id}`} className="block">
+              <div className="card p-3.5 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary-light flex items-center justify-center text-lg shrink-0">
                   {recipe.imageEmoji}
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-txt-primary">
-                    {recipe.title}
-                  </p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-t truncate">{recipe.title}</p>
                   <div className="flex gap-2 mt-0.5">
                     {recipe.portionsYield && (
-                      <span className="text-[10px] text-mint-500">
-                        &#128230; {recipe.portionsYield}팩 소분
-                      </span>
+                      <span className="text-[10px] text-primary">{recipe.portionsYield}팩 소분</span>
                     )}
                     {recipe.reheatInstructions && (
-                      <span className="text-[10px] text-txt-light">
-                        {recipe.reheatInstructions}
-                      </span>
+                      <span className="text-[10px] text-t-disabled truncate">{recipe.reheatInstructions}</span>
                     )}
                   </div>
                 </div>
-                <span className="text-lavender-300">&rarr;</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0"><path d="M6 4L10 8L6 12" stroke="#CDCDE0" strokeWidth="1.5" strokeLinecap="round" /></svg>
               </div>
             </Link>
           );
@@ -96,100 +49,100 @@ function ResultRecipes({
   );
 }
 
+function PrepChecklist({ plan }: { plan: WeeklyPlan }) {
+  return (
+    <div className="bg-primary-light rounded-2xl p-4">
+      <div className="flex items-center justify-between mb-3">
+        <p className="section-title">준비 체크리스트</p>
+        <span className="chip bg-surface text-t-hint">총 {formatTime(plan.prepDay.totalTime)}</span>
+      </div>
+      <ol className="space-y-3.5">
+        {plan.prepDay.tasks.map((task) => (
+          <li key={task.order} className="flex gap-3 items-start">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary text-white text-[10px] flex items-center justify-center font-bold mt-0.5">
+              {task.order}
+            </span>
+            <div className="flex-1">
+              <p className="text-sm text-t leading-relaxed">{task.instruction}</p>
+              <span className="text-[10px] text-t-hint mt-0.5 block">{formatTime(task.duration)}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 export default function WeeklyPage() {
-  const [selectedPlanId, setSelectedPlanId] = useState(weeklyPlans[0]?.id);
+  const [selectedId, setSelectedId] = useState(weeklyPlans[0]?.id);
   const [recipesMap, setRecipesMap] = useState<Record<string, Recipe>>({});
 
   useEffect(() => {
     import("@/data/recipes").then((m) => {
       const map: Record<string, Recipe> = {};
-      m.recipes.forEach((r: Recipe) => {
-        map[r.id] = r;
-      });
+      m.recipes.forEach((r: Recipe) => { map[r.id] = r; });
       setRecipesMap(map);
     });
   }, []);
 
-  const selectedPlan = weeklyPlans.find((p) => p.id === selectedPlanId);
+  const plan = weeklyPlans.find((p) => p.id === selectedId);
 
   const totalPacks = useMemo(() => {
-    if (!selectedPlan) return 0;
-    const recipeIds = new Set<string>();
-    selectedPlan.prepDay.tasks.forEach((t) => recipeIds.add(t.recipeId));
-    return Array.from(recipeIds).reduce((sum, id) => {
-      const recipe = recipesMap[id];
-      return sum + (recipe?.portionsYield ?? 0);
-    }, 0);
-  }, [selectedPlan, recipesMap]);
+    if (!plan) return 0;
+    const ids = new Set<string>();
+    plan.prepDay.tasks.forEach((t) => ids.add(t.recipeId));
+    return Array.from(ids).reduce((s, id) => s + (recipesMap[id]?.portionsYield ?? 0), 0);
+  }, [plan, recipesMap]);
 
   return (
     <>
       <Header />
-      <main className="max-w-lg mx-auto px-4 pt-6 pb-24">
-        <div className="flex items-center gap-3 mb-6">
-          <Mascot size={48} expression="cooking" />
-          <div>
-            <h1 className="text-xl font-bold text-txt-primary">
-              &#128197; 주간 밀프랩
-            </h1>
-            <p className="text-sm text-txt-muted">
-              한 번 만들고, 먹고 싶을 때 전자레인지만!
-            </p>
-          </div>
+      <main className="max-w-lg mx-auto px-4 pt-5 pb-24">
+        <div className="mb-5">
+          <h1 className="text-lg font-bold text-t">냉동 밀프랩</h1>
+          <p className="text-sm text-t-hint mt-0.5">한 번 만들고 냉동실에 쌓아두세요</p>
         </div>
 
         {/* Plan Selector */}
-        <div className="flex gap-2 mb-6">
-          {weeklyPlans.map((plan) => (
+        <div className="flex gap-1.5 p-1 bg-bg rounded-xl mb-5">
+          {weeklyPlans.map((p) => (
             <button
-              key={plan.id}
-              onClick={() => setSelectedPlanId(plan.id)}
-              className={
-                selectedPlanId === plan.id
-                  ? plan.id === "frozen-storage"
-                    ? "flex-1 py-3 rounded-2xl text-sm font-medium bg-gradient-to-r from-sky-400 to-lavender-400 text-white shadow-cute transition-all"
-                    : "flex-1 py-3 rounded-2xl text-sm font-medium bg-gradient-to-r from-mint-400 to-mint-500 text-white shadow-cute transition-all"
-                  : "flex-1 py-3 rounded-2xl text-sm font-medium bg-white border border-lavender-100 text-txt-muted hover:border-lavender-300 transition-all"
+              key={p.id}
+              onClick={() => setSelectedId(p.id)}
+              className={selectedId === p.id
+                ? "flex-1 py-2.5 rounded-lg bg-surface text-primary text-sm font-semibold shadow-sm transition-all duration-200"
+                : "flex-1 py-2.5 rounded-lg text-t-hint text-sm hover:text-t-sub transition-all duration-200"
               }
             >
-              {plan.id === "frozen-storage" ? "&#129482; " : "&#129388; "}
-              {plan.title}
+              {p.title}
             </button>
           ))}
         </div>
 
-        {selectedPlan && (
-          <>
-            {/* Plan Overview */}
-            <div className="bg-white rounded-3xl border border-lavender-100 p-4 mb-4 shadow-cute">
-              <p className="text-sm text-txt-muted mb-3">
-                {selectedPlan.description}
-              </p>
-              <div className="flex gap-3">
-                <div className="flex-1 bg-gradient-to-br from-lavender-50 to-pink-50 rounded-2xl p-3 text-center">
-                  <p className="text-lg font-bold text-lavender-500">
-                    {formatPrice(selectedPlan.totalCost)}
-                  </p>
-                  <p className="text-[10px] text-txt-light">총 비용</p>
+        {plan && (
+          <div className="space-y-4 animate-fade-up">
+            {/* Stats */}
+            <div className="card p-4">
+              <p className="text-sm text-t-sub mb-3">{plan.description}</p>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="bg-bg rounded-xl p-3 text-center">
+                  <p className="text-base font-bold text-primary">{formatPrice(plan.totalCost)}</p>
+                  <p className="text-[10px] text-t-disabled mt-0.5">총 비용</p>
                 </div>
-                <div className="flex-1 bg-gradient-to-br from-mint-50 to-sky-50 rounded-2xl p-3 text-center">
-                  <p className="text-lg font-bold text-mint-500">
-                    {formatTime(selectedPlan.prepDay.totalTime)}
-                  </p>
-                  <p className="text-[10px] text-txt-light">준비 시간</p>
+                <div className="bg-bg rounded-xl p-3 text-center">
+                  <p className="text-base font-bold text-success">{formatTime(plan.prepDay.totalTime)}</p>
+                  <p className="text-[10px] text-t-disabled mt-0.5">준비 시간</p>
                 </div>
-                <div className="flex-1 bg-gradient-to-br from-sky-50 to-lavender-50 rounded-2xl p-3 text-center">
-                  <p className="text-lg font-bold text-sky-500">
-                    {totalPacks}팩
-                  </p>
-                  <p className="text-[10px] text-txt-light">냉동 소분</p>
+                <div className="bg-bg rounded-xl p-3 text-center">
+                  <p className="text-base font-bold text-info">{totalPacks}팩</p>
+                  <p className="text-[10px] text-t-disabled mt-0.5">냉동 소분</p>
                 </div>
               </div>
             </div>
 
-            <ResultRecipes plan={selectedPlan} recipesMap={recipesMap} />
-            <PrepChecklist plan={selectedPlan} />
-          </>
+            <ResultRecipes plan={plan} recipesMap={recipesMap} />
+            <PrepChecklist plan={plan} />
+          </div>
         )}
       </main>
       <BottomNav />

@@ -9,61 +9,34 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        pink: {
-          50: "#FFF0F6",
-          100: "#FFE0EE",
-          200: "#FFC2DD",
-          300: "#FF94C4",
-          400: "#FF6BAD",
-          500: "#FF4D9B",
-          600: "#E8368A",
+        bg: "#FAFAFA",
+        surface: "#FFFFFF",
+        primary: {
+          DEFAULT: "#7C5CFC",
+          light: "#EDE8FF",
+          dark: "#5B3FD9",
         },
-        lavender: {
-          50: "#F5F0FF",
-          100: "#EDE5FF",
-          200: "#DDD0FF",
-          300: "#C4ADFF",
-          400: "#A78BFA",
-          500: "#8B5CF6",
-          600: "#7C3AED",
+        accent: {
+          DEFAULT: "#FF6B9D",
+          light: "#FFF0F5",
         },
-        mint: {
-          50: "#ECFDF5",
-          100: "#D1FAE5",
-          200: "#A7F3D0",
-          300: "#6EE7B7",
-          400: "#34D399",
-          500: "#10B981",
-          600: "#059669",
+        success: {
+          DEFAULT: "#34D399",
+          light: "#ECFDF5",
         },
-        peach: {
-          50: "#FFF8F0",
-          100: "#FFEDD5",
-          200: "#FED7AA",
-          300: "#FDBA74",
-          400: "#FB923C",
-          500: "#F97316",
+        info: {
+          DEFAULT: "#38BDF8",
+          light: "#F0F9FF",
         },
-        sky: {
-          50: "#F0F9FF",
-          100: "#E0F2FE",
-          200: "#BAE6FD",
-          300: "#7DD3FC",
-          400: "#38BDF8",
-          500: "#0EA5E9",
+        t: {
+          DEFAULT: "#1A1A2E",
+          sub: "#64648C",
+          hint: "#A0A0C0",
+          disabled: "#CDCDE0",
         },
-        cream: {
-          50: "#FFFCF9",
-          100: "#FFF8F0",
-          200: "#FFF0E0",
-        },
-        txt: {
-          primary: "#3D3044",
-          secondary: "#7D6B8A",
-          muted: "#B8A9C4",
-          light: "#D4C8DE",
+        border: {
+          DEFAULT: "#EDEDF5",
+          hover: "#D5D5E8",
         },
       },
       fontFamily: {
@@ -72,19 +45,27 @@ const config: Config = {
           "-apple-system",
           "BlinkMacSystemFont",
           "system-ui",
-          "Helvetica Neue",
-          "Apple SD Gothic Neo",
           "sans-serif",
         ],
       },
-      borderRadius: {
-        "2xl": "1rem",
-        "3xl": "1.5rem",
-        "4xl": "2rem",
-      },
       boxShadow: {
-        cute: "0 2px 12px rgba(139, 92, 246, 0.08)",
-        "cute-lg": "0 4px 20px rgba(139, 92, 246, 0.12)",
+        card: "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)",
+        "card-hover": "0 4px 12px rgba(124,92,252,0.08)",
+        float: "0 8px 24px rgba(0,0,0,0.06)",
+      },
+      keyframes: {
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+      },
+      animation: {
+        "fade-up": "fade-up 0.4s ease-out forwards",
+        "scale-in": "scale-in 0.3s ease-out forwards",
       },
     },
   },

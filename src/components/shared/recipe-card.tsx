@@ -10,9 +10,9 @@ interface RecipeCardProps {
 }
 
 const difficultyStyle = {
-  쉬움: "bg-mint-100 text-mint-600",
-  보통: "bg-lavender-100 text-lavender-600",
-  어려움: "bg-pink-100 text-pink-600",
+  쉬움: "bg-success-light text-success",
+  보통: "bg-primary-light text-primary",
+  어려움: "bg-accent-light text-accent",
 };
 
 export default function RecipeCard({
@@ -22,81 +22,56 @@ export default function RecipeCard({
   missingSeasonings,
 }: RecipeCardProps) {
   return (
-    <Link href={`/recipe/${recipe.id}`}>
-      <div className="bg-white rounded-3xl border border-lavender-100 p-4 hover:shadow-cute-lg transition-all active:scale-[0.98]">
+    <Link href={`/recipe/${recipe.id}`} className="block">
+      <div className="card p-4">
         <div className="flex items-start gap-3">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-lavender-50 to-pink-50 flex items-center justify-center text-3xl shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-primary-light flex items-center justify-center text-2xl shrink-0">
             {recipe.imageEmoji}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-txt-primary truncate">
+            <h3 className="font-semibold text-t text-sm truncate">
               {recipe.title}
             </h3>
-            <p className="text-xs text-txt-muted mt-0.5 line-clamp-1">
+            <p className="text-xs text-t-hint mt-0.5 line-clamp-1">
               {recipe.description}
             </p>
-            <div className="flex items-center gap-2 mt-2 flex-wrap">
-              <span
-                className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${difficultyStyle[recipe.difficulty]}`}
-              >
+            <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+              <span className={`chip text-[10px] ${difficultyStyle[recipe.difficulty]}`}>
                 {recipe.difficulty}
               </span>
-              <span className="text-[10px] text-txt-light">
+              <span className="text-[10px] text-t-disabled">
                 {formatTime(recipe.prepTime + recipe.cookTime)}
               </span>
-              <span className="text-[10px] text-txt-light">
+              <span className="text-[10px] text-t-disabled">
                 {formatPrice(recipe.estimatedCost)}
               </span>
-              {recipe.calories && (
-                <span className="text-[10px] text-txt-light">
-                  {recipe.calories}kcal
-                </span>
-              )}
             </div>
           </div>
           {matchPercentage !== undefined && (
-            <div
-              className={`shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold ${
-                matchPercentage >= 80
-                  ? "bg-mint-100 text-mint-600"
-                  : matchPercentage >= 50
-                  ? "bg-lavender-100 text-lavender-600"
-                  : "bg-cream-200 text-txt-muted"
-              }`}
-            >
+            <div className={`shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-xs font-bold ${
+              matchPercentage >= 80 ? "bg-success-light text-success"
+              : matchPercentage >= 50 ? "bg-primary-light text-primary"
+              : "bg-bg text-t-hint"
+            }`}>
               {matchPercentage}%
             </div>
           )}
         </div>
+
         {(missingIngredients?.length || missingSeasonings?.length) ? (
-          <div className="mt-2.5 pt-2.5 border-t border-lavender-50 space-y-1">
+          <div className="mt-3 pt-3 border-t border-border space-y-1">
             {missingIngredients && missingIngredients.length > 0 && (
-              <p className="text-[10px] text-txt-light">
-                추가 재료:{" "}
-                <span className="text-pink-400">
-                  {missingIngredients.join(", ")}
-                </span>
+              <p className="text-[11px] text-t-hint">
+                <span className="text-accent">{missingIngredients.join(", ")}</span> 필요
               </p>
             )}
             {missingSeasonings && missingSeasonings.length > 0 && (
-              <p className="text-[10px] text-mint-500">
-                &#10024; 이 양념만 있으면 OK: {missingSeasonings.join(", ")}
+              <p className="text-[11px] text-success">
+                {missingSeasonings.join(", ")}만 있으면 OK
               </p>
             )}
           </div>
         ) : null}
-        {recipe.tags.length > 0 && (
-          <div className="flex gap-1 mt-2 flex-wrap">
-            {recipe.tags.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className="text-[10px] px-1.5 py-0.5 rounded-full bg-lavender-50 text-lavender-400"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     </Link>
   );

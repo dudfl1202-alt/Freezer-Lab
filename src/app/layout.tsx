@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="antialiased min-h-screen bg-warm-50 text-warm-800">
+      <body className="antialiased min-h-screen bg-cream-50 text-txt-primary">
         {children}
       </body>
     </html>

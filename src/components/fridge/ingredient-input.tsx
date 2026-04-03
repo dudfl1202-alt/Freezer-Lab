@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { UserIngredient } from "@/types";
 import { commonIngredients } from "@/data/ingredients";
-import { cn } from "@/lib/utils";
 
 interface IngredientInputProps {
   ingredients: UserIngredient[];
@@ -45,12 +44,12 @@ export default function IngredientInput({
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="재료 입력 (쉼표로 구분, 예: 당근, 양파, 계란)"
-          className="flex-1 px-4 py-3 rounded-xl border border-primary-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 placeholder:text-warm-800/30"
+          placeholder="재료 입력 (쉼표로 구분)"
+          className="flex-1 px-4 py-3 rounded-2xl border border-lavender-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-lavender-300 focus:border-transparent placeholder:text-txt-light shadow-cute"
         />
         <button
           type="submit"
-          className="px-4 py-3 rounded-xl bg-primary-500 text-white text-sm font-medium hover:bg-primary-600 active:bg-primary-700 transition-colors shrink-0"
+          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-lavender-400 to-pink-400 text-white text-sm font-medium hover:opacity-90 active:scale-95 transition-all shrink-0 shadow-cute"
         >
           추가
         </button>
@@ -62,17 +61,12 @@ export default function IngredientInput({
           {ingredients.map((ing) => (
             <span
               key={ing.name}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary-100 text-primary-700 text-sm"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-lavender-100 to-pink-100 text-lavender-600 text-sm border border-lavender-200"
             >
               {ing.name}
-              {ing.quantity && (
-                <span className="text-primary-400 text-xs">
-                  {ing.quantity}
-                </span>
-              )}
               <button
                 onClick={() => onRemove(ing.name)}
-                className="ml-0.5 text-primary-400 hover:text-primary-600"
+                className="ml-0.5 text-lavender-300 hover:text-pink-500 transition-colors"
               >
                 &times;
               </button>
@@ -80,7 +74,7 @@ export default function IngredientInput({
           ))}
           <button
             onClick={() => ingredients.forEach((i) => onRemove(i.name))}
-            className="text-xs text-warm-800/30 hover:text-warm-800/50 px-2"
+            className="text-xs text-txt-light hover:text-pink-400 px-2 transition-colors"
           >
             전체 삭제
           </button>
@@ -89,7 +83,7 @@ export default function IngredientInput({
 
       {/* Quick Add */}
       <div className="mt-4">
-        <p className="text-xs text-warm-800/40 mb-2">자주 쓰는 재료</p>
+        <p className="text-xs text-txt-muted mb-2">&#127859; 자주 쓰는 재료</p>
         <div className="flex flex-wrap gap-1.5">
           {commonIngredients.map((name) => {
             const isAdded = ingredients.some((i) => i.name === name);
@@ -98,12 +92,11 @@ export default function IngredientInput({
                 key={name}
                 onClick={() => handleQuickAdd(name)}
                 disabled={isAdded}
-                className={cn(
-                  "text-xs px-2.5 py-1.5 rounded-lg border transition-colors",
+                className={
                   isAdded
-                    ? "bg-primary-100 border-primary-200 text-primary-400 cursor-default"
-                    : "bg-white border-primary-100 text-warm-800/60 hover:border-primary-300 hover:text-primary-500 active:bg-primary-50"
-                )}
+                    ? "text-xs px-2.5 py-1.5 rounded-full bg-lavender-100 border border-lavender-200 text-lavender-300 cursor-default"
+                    : "text-xs px-2.5 py-1.5 rounded-full bg-white border border-lavender-100 text-txt-secondary hover:border-pink-300 hover:text-pink-500 hover:bg-pink-50 active:scale-95 transition-all"
+                }
               >
                 {name}
               </button>

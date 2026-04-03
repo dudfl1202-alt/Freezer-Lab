@@ -17,7 +17,7 @@ export default function AffiliateLink({
       className={className}
     >
       {children}
-      <span className="inline-block ml-1 text-[9px] px-1 py-0.5 rounded bg-primary-50 text-primary-400 align-middle">
+      <span className="inline-block ml-1 text-[9px] px-1 py-0.5 rounded-full bg-pink-100 text-pink-400 align-middle font-medium">
         AD
       </span>
     </a>

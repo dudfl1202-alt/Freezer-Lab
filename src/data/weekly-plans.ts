@@ -2,493 +2,148 @@ import type { WeeklyPlan } from "@/types";
 
 export const weeklyPlans: WeeklyPlan[] = [
   {
-    id: "office-worker-mealprep",
-    title: "직장인 한 주 밀프랩",
+    id: "frozen-storage",
+    title: "냉동 보관 밀프랩",
     description:
-      "바쁜 직장인을 위한 실속 밀프랩. 일요일에 3가지 요리를 한꺼번에 만들어두고, 월~금 점심·저녁을 간편하게 해결하세요.",
-    totalCost: 25000,
+      "한 번에 만들어서 냉동실에 쌓아두고, 먹고 싶을 때 전자레인지만 돌리면 끝. 냉동 보관에 최적화된 메뉴 구성이에요.",
+    totalCost: 22000,
     prepDay: {
-      totalTime: 150,
+      totalTime: 120,
       tasks: [
         {
           order: 1,
           recipeId: "mushroom-beef-sotbap",
           instruction:
-            "쌀 5인분을 불리고, 버섯과 소고기를 손질해 밑간합니다. 솥밥 재료를 넣고 취사 시작합니다.",
-          duration: 20,
-        },
-        {
-          order: 2,
-          recipeId: "jeyuk-bokkeum",
-          instruction:
-            "솥밥이 취사되는 동안 돼지고기 목살을 한입 크기로 썰고 고추장 양념에 30분간 재워둡니다.",
-          duration: 10,
-        },
-        {
-          order: 3,
-          recipeId: "chicken-friedrice",
-          instruction:
-            "닭가슴살을 삶아서 잘게 찢어두고, 볶음밥용 채소(양파, 당근, 대파)를 잘게 다져 준비합니다.",
-          duration: 20,
-        },
-        {
-          order: 4,
-          recipeId: "jeyuk-bokkeum",
-          instruction:
-            "양념에 재운 돼지고기를 센 불에 볶다가 양파, 대파를 넣고 함께 볶아 제육볶음 3인분을 완성합니다.",
-          duration: 15,
-        },
-        {
-          order: 5,
-          recipeId: "chicken-friedrice",
-          instruction:
-            "찬밥 또는 갓 지은 밥에 찢은 닭가슴살, 채소를 넣고 참기름과 간장으로 간하며 볶아 3인분을 완성합니다.",
-          duration: 15,
-        },
-        {
-          order: 6,
-          recipeId: "mushroom-beef-sotbap",
-          instruction:
-            "솥밥 완성 후 양념장(간장, 참기름, 깨)을 만들고 잘 섞어 5인분으로 나누어 밀폐용기에 담습니다.",
-          duration: 10,
-        },
-        {
-          order: 7,
-          recipeId: "jeyuk-bokkeum",
-          instruction:
-            "제육볶음을 3개 용기에 나누어 담고, 밥과 함께 세트로 포장합니다. 완전히 식힌 후 냉동합니다.",
-          duration: 10,
-        },
-        {
-          order: 8,
-          recipeId: "chicken-friedrice",
-          instruction:
-            "닭가슴살 볶음밥을 3개 용기에 나눠 담고 완전히 식힌 후 냉동 보관합니다.",
-          duration: 10,
-        },
-      ],
-    },
-    weekSchedule: [
-      {
-        day: "월",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "mushroom-beef-sotbap",
-            reheatMethod: "전자레인지 3분",
-          },
-          {
-            type: "저녁",
-            recipeId: "jeyuk-bokkeum",
-            reheatMethod: "전자레인지 3분 30초",
-          },
-        ],
-      },
-      {
-        day: "화",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "chicken-friedrice",
-            reheatMethod: "전자레인지 2분 30초, 뚜껑 살짝 열어서",
-          },
-          {
-            type: "저녁",
-            recipeId: "mushroom-beef-sotbap",
-            reheatMethod: "전자레인지 3분",
-          },
-        ],
-      },
-      {
-        day: "수",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "jeyuk-bokkeum",
-            reheatMethod: "전자레인지 3분 30초",
-          },
-          {
-            type: "저녁",
-            recipeId: "chicken-friedrice",
-            reheatMethod: "전자레인지 2분 30초, 뚜껑 살짝 열어서",
-          },
-        ],
-      },
-      {
-        day: "목",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "mushroom-beef-sotbap",
-            reheatMethod: "전자레인지 3분",
-          },
-          {
-            type: "저녁",
-            recipeId: "jeyuk-bokkeum",
-            reheatMethod: "전자레인지 3분 30초",
-          },
-        ],
-      },
-      {
-        day: "금",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "mushroom-beef-sotbap",
-            reheatMethod: "전자레인지 3분",
-          },
-          {
-            type: "저녁",
-            recipeId: "chicken-friedrice",
-            reheatMethod: "전자레인지 2분 30초, 뚜껑 살짝 열어서",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "simple-frozen-mealprep",
-    title: "초간단 냉동 밀프랩",
-    description:
-      "요리 초보도 쉽게 따라할 수 있는 2가지 메뉴 밀프랩. 카레와 김치볶음밥만으로 한 주를 든든하게 채워보세요.",
-    totalCost: 18000,
-    prepDay: {
-      totalTime: 90,
-      tasks: [
-        {
-          order: 1,
-          recipeId: "curry-rice",
-          instruction:
-            "감자, 당근, 양파를 깍둑썰기하고 돼지고기 또는 닭고기를 한입 크기로 썰어 준비합니다.",
-          duration: 15,
-        },
-        {
-          order: 2,
-          recipeId: "curry-rice",
-          instruction:
-            "냄비에 기름을 두르고 고기를 먼저 볶다가 채소를 넣고 함께 볶습니다. 물을 붓고 끓입니다.",
-          duration: 10,
-        },
-        {
-          order: 3,
-          recipeId: "kimchi-friedrice",
-          instruction:
-            "카레가 끓는 동안 김치를 잘게 썰고, 햄·대파 등 볶음밥 재료를 다져 준비합니다.",
-          duration: 10,
-        },
-        {
-          order: 4,
-          recipeId: "curry-rice",
-          instruction:
-            "채소가 부드러워지면 불을 끄고 카레 루를 넣어 잘 녹인 뒤 다시 약불에서 5분간 끓여 4인분을 완성합니다.",
-          duration: 15,
-        },
-        {
-          order: 5,
-          recipeId: "kimchi-friedrice",
-          instruction:
-            "팬에 참기름을 두르고 김치를 먼저 볶다가 밥과 나머지 재료를 넣고 센 불에 볶아 4인분을 완성합니다.",
-          duration: 15,
-        },
-        {
-          order: 6,
-          recipeId: "curry-rice",
-          instruction:
-            "카레를 4개 용기에 밥과 함께 나누어 담습니다. 카레와 밥은 분리해서 담으면 더 좋습니다.",
-          duration: 10,
-        },
-        {
-          order: 7,
-          recipeId: "kimchi-friedrice",
-          instruction:
-            "김치볶음밥을 4개 용기에 나누어 담고 완전히 식힌 후 냉동 보관합니다.",
-          duration: 10,
-        },
-      ],
-    },
-    weekSchedule: [
-      {
-        day: "월",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "curry-rice",
-            reheatMethod: "전자레인지 3분, 중간에 한 번 저어주기",
-          },
-          {
-            type: "저녁",
-            recipeId: "kimchi-friedrice",
-            reheatMethod: "전자레인지 2분 30초",
-          },
-        ],
-      },
-      {
-        day: "화",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "kimchi-friedrice",
-            reheatMethod: "전자레인지 2분 30초",
-          },
-          {
-            type: "저녁",
-            recipeId: "curry-rice",
-            reheatMethod: "전자레인지 3분, 중간에 한 번 저어주기",
-          },
-        ],
-      },
-      {
-        day: "수",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "curry-rice",
-            reheatMethod: "전자레인지 3분, 중간에 한 번 저어주기",
-          },
-          {
-            type: "저녁",
-            recipeId: "kimchi-friedrice",
-            reheatMethod: "전자레인지 2분 30초",
-          },
-        ],
-      },
-      {
-        day: "목",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "kimchi-friedrice",
-            reheatMethod: "전자레인지 2분 30초",
-          },
-          {
-            type: "저녁",
-            recipeId: "curry-rice",
-            reheatMethod: "전자레인지 3분, 중간에 한 번 저어주기",
-          },
-        ],
-      },
-      {
-        day: "금",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "curry-rice",
-            reheatMethod: "전자레인지 3분, 중간에 한 번 저어주기",
-          },
-          {
-            type: "저녁",
-            recipeId: "kimchi-friedrice",
-            reheatMethod: "전자레인지 2분 30초",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "healthy-balanced-week",
-    title: "건강 균형식 한 주",
-    description:
-      "아침·점심·저녁을 균형 있게 챙기는 건강 밀프랩. 단백질, 채소, 발효식품을 고루 배치한 일주일 식단입니다.",
-    totalCost: 30000,
-    prepDay: {
-      totalTime: 180,
-      tasks: [
-        {
-          order: 1,
-          recipeId: "doenjang-jjigae",
-          instruction:
-            "멸치·다시마로 육수를 우려냅니다 (물 1.5L, 멸치 10마리, 다시마 2장, 10분 끓이기). 육수는 된장찌개와 잡채에 모두 사용합니다.",
-          duration: 15,
-        },
-        {
-          order: 2,
-          recipeId: "chicken-dosirak",
-          instruction:
-            "닭가슴살 5장을 소금, 후추, 맛술로 밑간하고 20분간 재워둡니다.",
+            "쌀 3컵(종이컵 기준)을 씻어서 30분 불립니다. 그동안 소고기 다짐육 200g에 간장 2스푼 + 참기름 1스푼으로 밑간합니다.",
           duration: 5,
         },
         {
-          order: 3,
-          recipeId: "japchae",
+          order: 2,
+          recipeId: "mushroom-beef-sotbap",
           instruction:
-            "당면을 삶아 찬물에 헹구고, 시금치·당근·양파·버섯·피망을 채 썰어 준비합니다.",
-          duration: 20,
+            "버섯 1팩을 잘게 썰고, 당근 반 개를 주사위 크기로 깍둑썰기합니다. 불린 쌀 위에 버섯, 당근, 밑간한 소고기를 올리고 밥솥에 취사합니다.",
+          duration: 10,
+        },
+        {
+          order: 3,
+          recipeId: "curry-rice",
+          instruction:
+            "솥밥 짓는 동안 카레 준비! 감자 2개, 당근 1개, 양파 1개를 엄지손톱 크기로 깍둑썰기합니다. 돼지고기 다짐육 150g을 냄비에 볶다가 채소를 넣고 3분 볶습니다.",
+          duration: 15,
         },
         {
           order: 4,
-          recipeId: "doenjang-jjigae",
+          recipeId: "curry-rice",
           instruction:
-            "두부, 호박, 양파, 청양고추를 썰고 육수에 된장 3큰술을 풀어 채소와 함께 끓여 3인분을 완성합니다.",
-          duration: 25,
+            "물 3컵(종이컵)을 붓고 센 불에서 끓인 후, 감자가 젓가락으로 찔릴 때까지 중불 10분. 불 끄고 카레가루 4스푼을 넣어 잘 저어 녹입니다.",
+          duration: 15,
         },
         {
           order: 5,
-          recipeId: "chicken-dosirak",
+          recipeId: "kimchi-friedrice",
           instruction:
-            "밑간한 닭가슴살을 에어프라이어 180도에서 12분 또는 팬에 구워 익힙니다. 5장 모두 완성합니다.",
-          duration: 20,
+            "김치 2주먹 분량을 가위로 잘게 자릅니다. 팬에 참기름 1스푼을 두르고 김치를 3분 볶은 후, 밥 2공기를 넣고 센 불에서 5분간 볶습니다.",
+          duration: 10,
         },
         {
           order: 6,
-          recipeId: "japchae",
+          recipeId: "mushroom-beef-sotbap",
           instruction:
-            "채소를 각각 볶은 뒤 당면과 합쳐 간장·참기름·설탕으로 양념하여 잡채 3인분을 완성합니다.",
-          duration: 25,
+            "솥밥이 완성되면 간장 2스푼 + 참기름 1스푼 + 깨를 섞어 양념장을 만듭니다. 솥밥에 양념장을 넣고 잘 비빕니다.",
+          duration: 5,
         },
         {
           order: 7,
-          recipeId: "chicken-dosirak",
+          recipeId: "mushroom-beef-sotbap",
           instruction:
-            "닭가슴살을 먹기 좋게 슬라이스하고 현미밥, 브로콜리, 방울토마토와 함께 도시락 용기 5개에 세트로 담습니다.",
-          duration: 20,
+            "밀폐용기에 주먹밥 크기(약 200g)씩 5개로 소분합니다. 뚜껑을 살짝 열어 김을 빼고, 식으면 냉동실에 넣습니다.",
+          duration: 10,
         },
         {
           order: 8,
-          recipeId: "doenjang-jjigae",
+          recipeId: "curry-rice",
           instruction:
-            "된장찌개를 3개 밀폐용기에 나누어 담습니다. 국물 요리는 용기의 80%만 채워야 냉동 시 넘치지 않습니다.",
+            "카레를 4개 용기에 나눠 담습니다. 밥과 카레는 따로 담아야 해동 시 식감이 좋습니다. 밥도 1공기씩 따로 4개 소분합니다.",
           duration: 10,
         },
         {
           order: 9,
-          recipeId: "japchae",
+          recipeId: "kimchi-friedrice",
           instruction:
-            "잡채를 3개 용기에 나누어 담고, 모든 용기를 완전히 식힌 뒤 냉동실에 보관합니다.",
+            "김치볶음밥을 4개 용기에 나눠 담고, 완전히 식힌 후 냉동합니다. 총 13팩 완성!",
           duration: 10,
         },
       ],
     },
-    weekSchedule: [
-      {
-        day: "월",
-        meals: [
-          {
-            type: "아침",
-            recipeId: "chicken-dosirak",
-            reheatMethod: "전자레인지 3분, 브로콜리는 따로 30초만",
-          },
-          {
-            type: "점심",
-            recipeId: "japchae",
-            reheatMethod: "전자레인지 2분",
-          },
-          {
-            type: "저녁",
-            recipeId: "doenjang-jjigae",
-            reheatMethod: "냄비에 옮겨 중불로 5분 끓이기",
-          },
-        ],
-      },
-      {
-        day: "화",
-        meals: [
-          {
-            type: "아침",
-            recipeId: "chicken-dosirak",
-            reheatMethod: "전자레인지 3분, 브로콜리는 따로 30초만",
-          },
-          {
-            type: "점심",
-            recipeId: "doenjang-jjigae",
-            reheatMethod: "전자레인지 4분, 중간에 저어주기",
-          },
-          {
-            type: "저녁",
-            recipeId: "japchae",
-            reheatMethod: "전자레인지 2분",
-          },
-        ],
-      },
-      {
-        day: "수",
-        meals: [
-          {
-            type: "아침",
-            recipeId: "chicken-dosirak",
-            reheatMethod: "전자레인지 3분, 브로콜리는 따로 30초만",
-          },
-          {
-            type: "점심",
-            recipeId: "japchae",
-            reheatMethod: "전자레인지 2분",
-          },
-          {
-            type: "저녁",
-            recipeId: "doenjang-jjigae",
-            reheatMethod: "냄비에 옮겨 중불로 5분 끓이기",
-          },
-        ],
-      },
-      {
-        day: "목",
-        meals: [
-          {
-            type: "아침",
-            recipeId: "chicken-dosirak",
-            reheatMethod: "전자레인지 3분, 브로콜리는 따로 30초만",
-          },
-          {
-            type: "점심",
-            recipeId: "doenjang-jjigae",
-            reheatMethod: "전자레인지 4분, 중간에 저어주기",
-          },
-          {
-            type: "저녁",
-            recipeId: "japchae",
-            reheatMethod: "전자레인지 2분",
-          },
-        ],
-      },
-      {
-        day: "금",
-        meals: [
-          {
-            type: "아침",
-            recipeId: "chicken-dosirak",
-            reheatMethod: "전자레인지 3분, 브로콜리는 따로 30초만",
-          },
-          {
-            type: "점심",
-            recipeId: "japchae",
-            reheatMethod: "전자레인지 2분",
-          },
-          {
-            type: "저녁",
-            recipeId: "doenjang-jjigae",
-            reheatMethod: "냄비에 옮겨 중불로 5분 끓이기",
-          },
-        ],
-      },
-      {
-        day: "토",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "chicken-dosirak",
-            reheatMethod: "전자레인지 3분",
-          },
-          {
-            type: "저녁",
-            recipeId: "japchae",
-            reheatMethod: "전자레인지 2분",
-          },
-        ],
-      },
-      {
-        day: "일",
-        meals: [
-          {
-            type: "점심",
-            recipeId: "doenjang-jjigae",
-            reheatMethod: "냄비에 옮겨 중불로 5분 끓이기",
-          },
-          {
-            type: "저녁",
-            recipeId: "chicken-dosirak",
-            reheatMethod: "전자레인지 3분",
-          },
-        ],
-      },
-    ],
+    weekSchedule: [],
+  },
+  {
+    id: "diet-mealprep",
+    title: "다이어트 밀프랩",
+    description:
+      "고단백 저탄수 위주로 구성한 다이어트 밀프랩. 닭가슴살 + 채소 볶음 + 잡채로 건강하게 한 주를 채워보세요.",
+    totalCost: 25000,
+    prepDay: {
+      totalTime: 100,
+      tasks: [
+        {
+          order: 1,
+          recipeId: "chicken-dosirak",
+          instruction:
+            "닭가슴살 500g(약 3덩이)을 키친타올로 물기를 제거합니다. 간장 2스푼 + 후추 약간 + 맛술 1스푼으로 밑간하고 15분 재워둡니다.",
+          duration: 5,
+        },
+        {
+          order: 2,
+          recipeId: "chicken-dosirak",
+          instruction:
+            "브로콜리 1송이를 한 입 크기로 잘라 끓는 물에 소금 반 스푼을 넣고 1분만 데칩니다. 찬물에 바로 헹궈야 아삭해요. 파프리카 2개, 양파 1개를 채 썹니다.",
+          duration: 10,
+        },
+        {
+          order: 3,
+          recipeId: "chicken-dosirak",
+          instruction:
+            "팬에 기름 1스푼을 두르고 닭가슴살을 중불에서 앞뒤 각 4분씩 굽습니다. 속까지 익었는지 가장 두꺼운 부분을 잘라서 확인하세요.",
+          duration: 10,
+        },
+        {
+          order: 4,
+          recipeId: "japchae",
+          instruction:
+            "당면 200g(건면 기준 한 줌 반)을 끓는 물에 6분 삶고 찬물에 헹굽니다. 가위로 2~3번 잘라두면 먹기 편해요.",
+          duration: 8,
+        },
+        {
+          order: 5,
+          recipeId: "japchae",
+          instruction:
+            "시금치 1줌을 끓는 물에 30초 데치고 찬물에 헹궈 꼭 짭니다. 당근 반 개는 성냥개비 크기로, 양파 반 개는 채 썰어 각각 팬에 기름 반 스푼씩 넣고 2분간 볶습니다.",
+          duration: 15,
+        },
+        {
+          order: 6,
+          recipeId: "japchae",
+          instruction:
+            "큰 볼에 당면 + 볶은 채소를 넣고, 간장 3스푼 + 참기름 2스푼 + 설탕 1스푼을 넣어 골고루 비빕니다.",
+          duration: 5,
+        },
+        {
+          order: 7,
+          recipeId: "chicken-dosirak",
+          instruction:
+            "닭가슴살을 1cm 두께로 슬라이스합니다. 도시락 용기 5개에 닭가슴살 + 브로콜리 + 파프리카를 담습니다. 현미밥을 곁들이려면 밥도 따로 소분합니다.",
+          duration: 10,
+        },
+        {
+          order: 8,
+          recipeId: "japchae",
+          instruction:
+            "잡채를 4개 용기에 나눠 담고 완전히 식힌 후 냉동합니다. 총 9팩 완성!",
+          duration: 10,
+        },
+      ],
+    },
+    weekSchedule: [],
   },
 ];

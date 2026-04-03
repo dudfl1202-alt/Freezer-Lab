@@ -133,4 +133,6 @@ export interface ScoredRecipe {
   totalRequired: number;
   matchPercentage: number;
   missingIngredients: string[];
+  missingSeasonings: string[];
+  mainMatchPercentage: number;
 }

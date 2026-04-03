@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Header from "@/components/layout/header";
 import BottomNav from "@/components/layout/bottom-nav";
@@ -19,16 +19,18 @@ function PrepChecklist({ plan }: { plan: WeeklyPlan }) {
           총 {formatTime(plan.prepDay.totalTime)}
         </span>
       </div>
-      <ol className="space-y-3">
+      <ol className="space-y-4">
         {plan.prepDay.tasks.map((task) => (
           <li key={task.order} className="flex gap-3 items-start">
-            <span className="shrink-0 w-6 h-6 rounded-full bg-primary-200 text-primary-600 text-xs flex items-center justify-center font-bold mt-0.5">
+            <span className="shrink-0 w-7 h-7 rounded-full bg-primary-200 text-primary-600 text-xs flex items-center justify-center font-bold mt-0.5">
               {task.order}
             </span>
             <div className="flex-1">
-              <p className="text-sm text-warm-800">{task.instruction}</p>
-              <span className="text-[10px] text-warm-800/40">
-                {formatTime(task.duration)}
+              <p className="text-sm text-warm-800 leading-relaxed">
+                {task.instruction}
+              </p>
+              <span className="text-[10px] text-warm-800/40 mt-1 block">
+                ⏱️ {formatTime(task.duration)}
               </span>
             </div>
           </li>
@@ -38,57 +40,56 @@ function PrepChecklist({ plan }: { plan: WeeklyPlan }) {
   );
 }
 
-function WeekCalendar({
+function ResultRecipes({
   plan,
   recipesMap,
 }: {
   plan: WeeklyPlan;
   recipesMap: Record<string, Recipe>;
 }) {
+  // 준비 태스크에서 고유 레시피 ID 추출
+  const recipeIds = useMemo(() => {
+    const ids = new Set<string>();
+    plan.prepDay.tasks.forEach((t) => ids.add(t.recipeId));
+    return Array.from(ids);
+  }, [plan]);
+
   return (
-    <div className="space-y-2">
+    <div className="mb-4">
       <h3 className="text-sm font-bold text-warm-800 mb-3">
-        🗓️ 주간 식단표
+        🍱 완성되는 메뉴
       </h3>
-      {plan.weekSchedule.map((day) => (
-        <div
-          key={day.day}
-          className="bg-white rounded-xl border border-primary-50 p-3"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-8 h-8 rounded-lg bg-primary-100 text-primary-600 text-sm font-bold flex items-center justify-center">
-              {day.day}
-            </span>
-            <span className="text-xs text-warm-800/40">
-              {day.meals.length}끼
-            </span>
-          </div>
-          <div className="space-y-1.5 ml-10">
-            {day.meals.map((meal, idx) => {
-              const recipe = recipesMap[meal.recipeId];
-              return (
-                <Link
-                  key={idx}
-                  href={`/recipe/${meal.recipeId}`}
-                  className="flex items-center justify-between group"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-warm-800/30 w-6">
-                      {meal.type}
-                    </span>
-                    <span className="text-sm text-warm-800 group-hover:text-primary-500 transition-colors">
-                      {recipe?.imageEmoji} {recipe?.title ?? meal.recipeId}
-                    </span>
+      <div className="space-y-2">
+        {recipeIds.map((id) => {
+          const recipe = recipesMap[id];
+          if (!recipe) return null;
+          return (
+            <Link key={id} href={`/recipe/${id}`}>
+              <div className="bg-white rounded-xl border border-primary-50 p-3 flex items-center gap-3 hover:shadow-sm transition-shadow active:scale-[0.98] mb-2">
+                <span className="text-2xl">{recipe.imageEmoji}</span>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-warm-800">
+                    {recipe.title}
+                  </p>
+                  <div className="flex gap-2 mt-0.5">
+                    {recipe.portionsYield && (
+                      <span className="text-[10px] text-fresh-600">
+                        📦 {recipe.portionsYield}팩 소분
+                      </span>
+                    )}
+                    {recipe.reheatInstructions && (
+                      <span className="text-[10px] text-warm-800/40">
+                        {recipe.reheatInstructions}
+                      </span>
+                    )}
                   </div>
-                  <span className="text-[10px] text-warm-800/30">
-                    {meal.reheatMethod}
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+                </div>
+                <span className="text-warm-800/20">&rarr;</span>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -109,6 +110,17 @@ export default function WeeklyPage() {
 
   const selectedPlan = weeklyPlans.find((p) => p.id === selectedPlanId);
 
+  // 총 소분 팩 수 계산
+  const totalPacks = useMemo(() => {
+    if (!selectedPlan) return 0;
+    const recipeIds = new Set<string>();
+    selectedPlan.prepDay.tasks.forEach((t) => recipeIds.add(t.recipeId));
+    return Array.from(recipeIds).reduce((sum, id) => {
+      const recipe = recipesMap[id];
+      return sum + (recipe?.portionsYield ?? 0);
+    }, 0);
+  }, [selectedPlan, recipesMap]);
+
   return (
     <>
       <Header />
@@ -118,23 +130,26 @@ export default function WeeklyPage() {
             📅 주간 밀프랩
           </h1>
           <p className="text-sm text-warm-800/50">
-            일요일에 한 번 만들고, 평일은 전자레인지만 돌리세요
+            일요일에 한 번 만들고, 먹고 싶을 때 전자레인지만 돌리세요
           </p>
         </div>
 
         {/* Plan Selector */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+        <div className="flex gap-2 mb-6">
           {weeklyPlans.map((plan) => (
             <button
               key={plan.id}
               onClick={() => setSelectedPlanId(plan.id)}
               className={cn(
-                "shrink-0 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors",
+                "flex-1 py-3 rounded-xl text-sm font-medium transition-colors text-center",
                 selectedPlanId === plan.id
-                  ? "bg-primary-500 text-white"
+                  ? plan.id === "frozen-storage"
+                    ? "bg-ice-500 text-white"
+                    : "bg-fresh-500 text-white"
                   : "bg-white border border-primary-100 text-warm-800/60 hover:border-primary-300"
               )}
             >
+              {plan.id === "frozen-storage" ? "🧊 " : "🥗 "}
               {plan.title}
             </button>
           ))}
@@ -162,19 +177,15 @@ export default function WeeklyPage() {
                 </div>
                 <div className="flex-1 bg-warm-50 rounded-xl p-3 text-center">
                   <p className="text-lg font-bold text-ice-500">
-                    {selectedPlan.weekSchedule.reduce(
-                      (sum, d) => sum + d.meals.length,
-                      0
-                    )}
-                    끼
+                    {totalPacks}팩
                   </p>
-                  <p className="text-[10px] text-warm-800/40">총 식사</p>
+                  <p className="text-[10px] text-warm-800/40">냉동 소분</p>
                 </div>
               </div>
             </div>
 
+            <ResultRecipes plan={selectedPlan} recipesMap={recipesMap} />
             <PrepChecklist plan={selectedPlan} />
-            <WeekCalendar plan={selectedPlan} recipesMap={recipesMap} />
           </>
         )}
       </main>

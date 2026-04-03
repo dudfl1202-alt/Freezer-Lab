@@ -100,6 +100,7 @@ export default function FridgePage() {
                     recipe={result.recipe}
                     matchPercentage={result.matchPercentage}
                     missingIngredients={result.missingIngredients}
+                    missingSeasonings={result.missingSeasonings}
                   />
                 ))}
               </div>

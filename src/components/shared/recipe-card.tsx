@@ -6,6 +6,7 @@ interface RecipeCardProps {
   recipe: Recipe;
   matchPercentage?: number;
   missingIngredients?: string[];
+  missingSeasonings?: string[];
 }
 
 const difficultyColor = {
@@ -18,6 +19,7 @@ export default function RecipeCard({
   recipe,
   matchPercentage,
   missingIngredients,
+  missingSeasonings,
 }: RecipeCardProps) {
   return (
     <Link href={`/recipe/${recipe.id}`}>
@@ -70,16 +72,23 @@ export default function RecipeCard({
             </div>
           )}
         </div>
-        {missingIngredients && missingIngredients.length > 0 && (
-          <div className="mt-2 pt-2 border-t border-primary-50">
-            <p className="text-[10px] text-warm-800/40">
-              부족한 재료:{" "}
-              <span className="text-coral-500">
-                {missingIngredients.join(", ")}
-              </span>
-            </p>
+        {(missingIngredients?.length || missingSeasonings?.length) ? (
+          <div className="mt-2 pt-2 border-t border-primary-50 space-y-1">
+            {missingIngredients && missingIngredients.length > 0 && (
+              <p className="text-[10px] text-warm-800/40">
+                추가 재료:{" "}
+                <span className="text-coral-500">
+                  {missingIngredients.join(", ")}
+                </span>
+              </p>
+            )}
+            {missingSeasonings && missingSeasonings.length > 0 && (
+              <p className="text-[10px] text-fresh-600">
+                이 양념만 있으면 OK: {missingSeasonings.join(", ")}
+              </p>
+            )}
           </div>
-        )}
+        ) : null}
         {recipe.tags.length > 0 && (
           <div className="flex gap-1 mt-2 flex-wrap">
             {recipe.tags.slice(0, 3).map((tag) => (

@@ -21,9 +21,9 @@ export default function Header() {
         {!isHome && (
           <nav className="flex gap-1">
             {[
+              { href: "/weekly", label: "밀프랩", icon: "🧊" },
               { href: "/fridge", label: "냉장고", icon: "🥕" },
               { href: "/shopping", label: "장보기", icon: "🛒" },
-              { href: "/weekly", label: "밀프랩", icon: "📅" },
             ].map((item) => (
               <Link
                 key={item.href}

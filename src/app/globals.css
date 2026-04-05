@@ -4,53 +4,12 @@
 
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
-:root {
-  --background: #FAFAFA;
-  --foreground: #1A1A2E;
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: #191F28;
+  background: #F7F8FA;
   font-family: "Pretendard Variable", Pretendard, -apple-system,
     BlinkMacSystemFont, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-@layer base {
-  * {
-    -webkit-tap-highlight-color: transparent;
-  }
-}
-
-@layer components {
-  .card {
-    @apply bg-surface rounded-2xl border border-border shadow-card transition-all duration-200;
-  }
-  .card:hover {
-    @apply shadow-card-hover border-border-hover;
-  }
-  .card:active {
-    @apply scale-[0.98];
-  }
-  .chip {
-    @apply text-xs px-2.5 py-1 rounded-full font-medium;
-  }
-  .btn-primary {
-    @apply px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold
-           hover:bg-primary-dark active:scale-95 transition-all duration-150;
-  }
-  .btn-outline {
-    @apply px-5 py-2.5 rounded-xl bg-surface text-t-sub text-sm font-medium
-           border border-border hover:border-primary hover:text-primary
-           active:scale-95 transition-all duration-150;
-  }
-  .section-title {
-    @apply text-sm font-semibold text-t tracking-tight;
-  }
-  .stagger-1 { animation-delay: 0.05s; }
-  .stagger-2 { animation-delay: 0.1s; }
-  .stagger-3 { animation-delay: 0.15s; }
-  .stagger-4 { animation-delay: 0.2s; }
-}
+* { -webkit-tap-highlight-color: transparent; }

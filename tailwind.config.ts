@@ -9,34 +9,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#FAFAFA",
+        main: {
+          DEFAULT: "#3CC8A1",
+          light: "#E8F8F2",
+          dark: "#2BA888",
+          50: "#F2FBF8",
+        },
+        sub: {
+          DEFAULT: "#FF8FA3",
+          light: "#FFF0F3",
+        },
+        point: "#FFD43B",
+        bg: "#F7F8FA",
         surface: "#FFFFFF",
-        primary: {
-          DEFAULT: "#7C5CFC",
-          light: "#EDE8FF",
-          dark: "#5B3FD9",
-        },
-        accent: {
-          DEFAULT: "#FF6B9D",
-          light: "#FFF0F5",
-        },
-        success: {
-          DEFAULT: "#34D399",
-          light: "#ECFDF5",
-        },
-        info: {
-          DEFAULT: "#38BDF8",
-          light: "#F0F9FF",
-        },
         t: {
-          DEFAULT: "#1A1A2E",
-          sub: "#64648C",
-          hint: "#A0A0C0",
-          disabled: "#CDCDE0",
+          DEFAULT: "#191F28",
+          sub: "#6B7684",
+          caption: "#8B95A1",
+          disabled: "#B0B8C1",
+          inverse: "#FFFFFF",
         },
-        border: {
-          DEFAULT: "#EDEDF5",
-          hover: "#D5D5E8",
+        line: {
+          DEFAULT: "#F2F3F6",
+          bold: "#E5E8EB",
         },
       },
       fontFamily: {
@@ -49,23 +44,18 @@ const config: Config = {
         ],
       },
       boxShadow: {
-        card: "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)",
-        "card-hover": "0 4px 12px rgba(124,92,252,0.08)",
-        float: "0 8px 24px rgba(0,0,0,0.06)",
+        sm: "0 1px 2px rgba(0,0,0,0.04)",
+        card: "0 2px 8px rgba(0,0,0,0.04)",
+        float: "0 4px 16px rgba(0,0,0,0.08)",
       },
       keyframes: {
-        "fade-up": {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "scale-in": {
-          "0%": { opacity: "0", transform: "scale(0.95)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(4px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
-        "fade-up": "fade-up 0.4s ease-out forwards",
-        "scale-in": "scale-in 0.3s ease-out forwards",
+        "fade-in": "fade-in 0.3s ease-out forwards",
       },
     },
   },

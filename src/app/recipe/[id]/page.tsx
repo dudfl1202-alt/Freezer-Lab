@@ -25,28 +25,23 @@ export default function RecipeDetailPage() {
 
   return (
     <main className="max-w-lg mx-auto pb-12">
-      {/* 상단 */}
       <div className="bg-gradient-to-b from-[#F0F7F4] to-bg pt-4 pb-10 px-5">
-        <Link href="/" className="inline-flex items-center gap-1 text-[13px] text-t-sub mb-6">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="#888" strokeWidth="1.5" strokeLinecap="round" /></svg>
+        <Link href="/" className="text-[13px] text-t-sub inline-block mb-6">
           돌아가기
         </Link>
-        <div className="text-center">
-          <span className="text-[48px] block mb-2">{recipe.imageEmoji}</span>
-          <h1 className="text-[22px] font-extrabold tracking-tight text-t">{recipe.title}</h1>
-          <p className="text-[13px] text-t-sub mt-1">{recipe.description}</p>
-          <div className="flex justify-center gap-3 mt-3">
-            <span className={`text-[12px] font-bold ${
-              recipe.difficulty === "쉬움" ? "text-main" : recipe.difficulty === "보통" ? "text-sub" : "text-t-sub"
-            }`}>{recipe.difficulty}</span>
-            <span className="text-[12px] text-t-caption">{formatTime(recipe.prepTime + recipe.cookTime)}</span>
-            <span className="text-[12px] text-t-caption">{formatPrice(recipe.estimatedCost)}</span>
-            {recipe.calories && <span className="text-[12px] text-t-caption">{recipe.calories}kcal</span>}
-          </div>
+        <h1 className="text-[22px] font-extrabold tracking-tight text-t">{recipe.title}</h1>
+        <p className="text-[13px] text-t-sub mt-1">{recipe.description}</p>
+        <div className="flex gap-3 mt-3">
+          <span className={`text-[12px] font-bold ${
+            recipe.difficulty === "쉬움" ? "text-main" : recipe.difficulty === "보통" ? "text-sub" : "text-t-sub"
+          }`}>{recipe.difficulty}</span>
+          <span className="text-[12px] text-t-caption">{formatTime(recipe.prepTime + recipe.cookTime)}</span>
+          <span className="text-[12px] text-t-caption">{formatPrice(recipe.estimatedCost)}</span>
+          {recipe.calories && <span className="text-[12px] text-t-caption">{recipe.calories}kcal</span>}
         </div>
       </div>
 
-      <div className="px-5 -mt-5 space-y-4">
+      <div className="px-5 -mt-4 space-y-5">
         {/* 재료 */}
         <div className="bg-surface rounded-xl shadow-sm p-5">
           <p className="text-[14px] font-bold tracking-tight text-t mb-3">
@@ -54,9 +49,9 @@ export default function RecipeDetailPage() {
           </p>
           {recipe.ingredients.map(ing => (
             <div key={ing.ingredientId} className="flex items-center justify-between py-2.5 border-b border-line last:border-0">
-              <div className="flex items-center gap-1.5">
+              <div>
                 <span className={`text-[13px] ${ing.optional ? "text-t-caption" : "text-t"}`}>{ing.name}</span>
-                {ing.optional && <span className="text-[10px] text-t-disabled bg-line px-1.5 py-0.5 rounded">선택</span>}
+                {ing.optional && <span className="text-[10px] text-t-disabled ml-1">선택</span>}
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[13px] text-t-sub">{ing.amount}</span>
@@ -72,17 +67,11 @@ export default function RecipeDetailPage() {
           <ol className="space-y-5">
             {recipe.steps.map(step => (
               <li key={step.order} className="flex gap-3">
-                <span className="shrink-0 w-6 h-6 rounded-full bg-main text-white text-[11px] flex items-center justify-center font-bold mt-0.5">
-                  {step.order}
-                </span>
-                <div className="flex-1">
+                <span className="text-[13px] font-bold text-main shrink-0 w-5 mt-px">{step.order}.</span>
+                <div>
                   <p className="text-[13px] text-t leading-[1.7]">{step.instruction}</p>
-                  {step.duration && <span className="text-[11px] text-t-caption mt-1 block">{formatTime(step.duration)}</span>}
-                  {step.tip && (
-                    <div className="mt-2 bg-sub-light rounded-lg px-3 py-2">
-                      <p className="text-[12px] text-sub font-medium">{step.tip}</p>
-                    </div>
-                  )}
+                  {step.duration && <span className="text-[11px] text-t-caption mt-0.5 block">{formatTime(step.duration)}</span>}
+                  {step.tip && <p className="text-[12px] text-sub mt-1.5 font-medium">{step.tip}</p>}
                 </div>
               </li>
             ))}
@@ -91,7 +80,7 @@ export default function RecipeDetailPage() {
 
         {/* 냉동 가이드 */}
         {(recipe.freezeInstructions || recipe.reheatInstructions) && (
-          <div className="bg-main-light rounded-xl p-5">
+          <div className="bg-surface rounded-xl shadow-sm p-5">
             <p className="text-[14px] font-bold tracking-tight text-t mb-3">냉동 & 해동 가이드</p>
             {recipe.freezeInstructions && (
               <div className="mb-3">
@@ -106,7 +95,7 @@ export default function RecipeDetailPage() {
               </div>
             )}
             {recipe.portionsYield && (
-              <p className="text-[12px] text-main font-semibold mt-3 pt-3 border-t border-main-muted/30">
+              <p className="text-[12px] text-main font-semibold mt-3 pt-3 border-t border-line">
                 {recipe.portionsYield}인분 소분 가능
               </p>
             )}

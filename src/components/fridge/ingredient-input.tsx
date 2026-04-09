@@ -32,8 +32,8 @@ export default function IngredientInput({ ingredients, onAdd, onRemove }: Props)
         <input
           type="text" value={input} onChange={e => setInput(e.target.value)}
           placeholder="재료를 입력하세요 (쉼표로 구분)"
-          className="flex-1 px-4 py-3 rounded-lg bg-surface border border-line-bold text-[13px]
-                     focus:outline-none focus:border-main placeholder:text-t-disabled transition-colors"
+          className="flex-1 px-4 py-3 rounded-lg bg-bg text-[13px]
+                     focus:outline-none focus:ring-1 focus:ring-main placeholder:text-t-disabled transition-all"
         />
         <button type="submit"
           className="px-5 py-3 rounded-lg bg-main text-white text-[13px] font-bold
@@ -48,12 +48,11 @@ export default function IngredientInput({ ingredients, onAdd, onRemove }: Props)
             <span key={ing.name}
               className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-main-light text-main text-[13px] font-medium">
               {ing.name}
-              <button onClick={() => onRemove(ing.name)}
-                className="text-main-muted hover:text-main text-sm ml-0.5">&times;</button>
+              <button onClick={() => onRemove(ing.name)} className="text-main/40 hover:text-main text-sm ml-0.5">&times;</button>
             </span>
           ))}
           <button onClick={() => ingredients.forEach(i => onRemove(i.name))}
-            className="text-[11px] text-t-caption hover:text-sub px-1 transition-colors">전체 삭제</button>
+            className="text-[11px] text-t-caption px-1">전체 삭제</button>
         </div>
       )}
 
@@ -66,7 +65,7 @@ export default function IngredientInput({ ingredients, onAdd, onRemove }: Props)
               <button key={name} onClick={() => quickAdd(name)} disabled={added}
                 className={added
                   ? "text-[12px] px-2.5 py-1.5 rounded-lg bg-line text-t-disabled"
-                  : "text-[12px] px-2.5 py-1.5 rounded-lg bg-surface border border-line-bold text-t-sub hover:border-main hover:text-main active:scale-95 transition-all"
+                  : "text-[12px] px-2.5 py-1.5 rounded-lg bg-bg text-t-sub hover:text-main active:scale-95 transition-all"
                 }>{name}</button>
             );
           })}

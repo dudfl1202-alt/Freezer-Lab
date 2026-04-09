@@ -29,11 +29,10 @@ export default function FridgePage() {
     <>
       <Header />
       <main className="max-w-lg mx-auto px-5 pt-5 pb-24">
-        <h1 className="text-[18px] font-extrabold tracking-tight text-t mb-0.5">냉장고 털기</h1>
-        <p className="text-[13px] text-t-sub mb-5">있는 재료를 입력하면 레시피를 찾아드려요</p>
+        <h1 className="text-[18px] font-extrabold tracking-tight text-t">냉장고 털기</h1>
+        <p className="text-[13px] text-t-sub mt-1 mb-5">있는 재료를 입력하면 레시피를 찾아드려요</p>
 
-        {/* 입력 영역 강조 */}
-        <div className="bg-surface rounded-xl shadow-sm p-4 mb-6">
+        <div className="bg-surface rounded-xl shadow-sm p-5 mb-6">
           <IngredientInput
             ingredients={ingredients}
             onAdd={i => setIngredients(prev => [...prev, i])}
@@ -42,13 +41,9 @@ export default function FridgePage() {
         </div>
 
         {ingredients.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-[32px] mb-2 opacity-30">🧊</p>
-            <p className="text-[13px] text-t-disabled">재료를 입력해보세요</p>
-          </div>
+          <p className="text-center text-[13px] text-t-disabled py-16">재료를 입력해보세요</p>
         ) : results.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-[32px] mb-2 opacity-30">🤔</p>
             <p className="text-[13px] text-t-disabled">매칭되는 레시피가 없어요</p>
             <p className="text-[11px] text-t-disabled mt-1">재료를 더 추가해보세요</p>
           </div>

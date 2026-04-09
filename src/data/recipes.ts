@@ -1,6 +1,8 @@
 import { Recipe } from "@/types";
+import { recipesA } from "./recipes-a";
+import { recipesB } from "./recipes-b";
 
-export const recipes: Recipe[] = [
+const baseRecipes: Recipe[] = [
   {
     id: "kimchi-friedrice",
     title: "김치볶음밥",
@@ -777,3 +779,5 @@ export const recipes: Recipe[] = [
     estimatedCost: 2500,
   },
 ];
+
+export const recipes: Recipe[] = [...baseRecipes, ...recipesA, ...recipesB];

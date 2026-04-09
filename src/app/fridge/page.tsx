@@ -8,7 +8,6 @@ import Header from "@/components/layout/header";
 import BottomNav from "@/components/layout/bottom-nav";
 import IngredientInput from "@/components/fridge/ingredient-input";
 import RecipeCard from "@/components/shared/recipe-card";
-import Mascot from "@/components/shared/mascot";
 
 export default function FridgePage() {
   const [ingredients, setIngredients] = useState<UserIngredient[]>([]);
@@ -30,42 +29,43 @@ export default function FridgePage() {
     <>
       <Header />
       <main className="max-w-lg mx-auto px-5 pt-5 pb-24">
-        <h1 className="text-[18px] font-bold text-t mb-1">냉장고 털기</h1>
-        <p className="text-[13px] text-t-caption mb-5">있는 재료를 입력하면 레시피를 찾아드려요</p>
+        <h1 className="text-[18px] font-extrabold tracking-tight text-t mb-0.5">냉장고 털기</h1>
+        <p className="text-[13px] text-t-sub mb-5">있는 재료를 입력하면 레시피를 찾아드려요</p>
 
-        <IngredientInput
-          ingredients={ingredients}
-          onAdd={i => setIngredients(prev => [...prev, i])}
-          onRemove={n => setIngredients(prev => prev.filter(i => i.name !== n))}
-        />
-
-        <div className="mt-6">
-          {ingredients.length === 0 ? (
-            <div className="text-center py-16">
-              <Mascot size={56} mood="sleep" className="mx-auto mb-2 opacity-50" />
-              <p className="text-[13px] text-t-disabled">재료를 입력해보세요</p>
-            </div>
-          ) : results.length === 0 ? (
-            <div className="text-center py-16">
-              <Mascot size={56} mood="default" className="mx-auto mb-2 opacity-50" />
-              <p className="text-[13px] text-t-disabled">매칭되는 레시피가 없어요</p>
-              <p className="text-[11px] text-t-disabled mt-1">재료를 더 추가해보세요</p>
-            </div>
-          ) : (
-            <>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[14px] font-bold text-t">추천 레시피</span>
-                <span className="text-[12px] text-t-caption">{results.length}개</span>
-              </div>
-              <div className="space-y-2.5">
-                {results.map(r => (
-                  <RecipeCard key={r.recipe.id} recipe={r.recipe} matchPercentage={r.matchPercentage}
-                    missingIngredients={r.missingIngredients} missingSeasonings={r.missingSeasonings} />
-                ))}
-              </div>
-            </>
-          )}
+        {/* 입력 영역 강조 */}
+        <div className="bg-surface rounded-xl shadow-sm p-4 mb-6">
+          <IngredientInput
+            ingredients={ingredients}
+            onAdd={i => setIngredients(prev => [...prev, i])}
+            onRemove={n => setIngredients(prev => prev.filter(i => i.name !== n))}
+          />
         </div>
+
+        {ingredients.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-[32px] mb-2 opacity-30">🧊</p>
+            <p className="text-[13px] text-t-disabled">재료를 입력해보세요</p>
+          </div>
+        ) : results.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-[32px] mb-2 opacity-30">🤔</p>
+            <p className="text-[13px] text-t-disabled">매칭되는 레시피가 없어요</p>
+            <p className="text-[11px] text-t-disabled mt-1">재료를 더 추가해보세요</p>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[14px] font-bold tracking-tight text-t">추천 레시피</span>
+              <span className="text-[12px] text-t-caption">{results.length}개</span>
+            </div>
+            <div className="space-y-2.5">
+              {results.map(r => (
+                <RecipeCard key={r.recipe.id} recipe={r.recipe} matchPercentage={r.matchPercentage}
+                  missingIngredients={r.missingIngredients} missingSeasonings={r.missingSeasonings} />
+              ))}
+            </div>
+          </>
+        )}
       </main>
       <BottomNav />
     </>

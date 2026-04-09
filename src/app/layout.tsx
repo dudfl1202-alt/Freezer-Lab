@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Freezer Lab",
+  title: "프리저랩 - 냉동 밀프랩",
   description: "자취생을 위한 냉동 밀프랩 가이드",
 };
 

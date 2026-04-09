@@ -15,12 +15,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-surface border-b border-line">
-      <div className="max-w-lg mx-auto px-5 h-12 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-1.5">
-          <div className="w-7 h-7 rounded-lg bg-main flex items-center justify-center">
-            <span className="text-white text-[11px] font-extrabold">F</span>
-          </div>
-          <span className="font-bold text-[15px] text-t">프리저랩</span>
+      <div className="max-w-lg mx-auto px-5 h-[52px] flex items-center justify-between">
+        <Link href="/" className="text-[17px] font-extrabold tracking-tight text-t">
+          프리저랩
         </Link>
         {!isHome && (
           <div className="flex">
@@ -30,8 +27,8 @@ export default function Header() {
                 href={tab.href}
                 className={
                   pathname === tab.href
-                    ? "text-[13px] px-3 py-1 text-main font-semibold"
-                    : "text-[13px] px-3 py-1 text-t-caption"
+                    ? "text-[13px] px-3 py-1 text-main font-bold"
+                    : "text-[13px] px-3 py-1 text-t-caption font-medium"
                 }
               >
                 {tab.label}

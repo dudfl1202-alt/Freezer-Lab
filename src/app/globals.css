@@ -5,11 +5,12 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 body {
-  color: #191F28;
-  background: #F7F8FA;
+  color: #1A1A1A;
+  background: #FAFAF8;
   font-family: "Pretendard Variable", Pretendard, -apple-system,
     BlinkMacSystemFont, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
 }
 
 * { -webkit-tap-highlight-color: transparent; }

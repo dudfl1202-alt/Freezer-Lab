@@ -9,29 +9,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        bg: "#FAFAF8",
+        surface: "#FFFFFF",
         main: {
-          DEFAULT: "#3CC8A1",
-          light: "#E8F8F2",
-          dark: "#2BA888",
-          50: "#F2FBF8",
+          DEFAULT: "#3D7A5F",
+          light: "#F0F7F4",
+          dark: "#2D5C47",
+          muted: "#A8CCBA",
         },
         sub: {
-          DEFAULT: "#FF8FA3",
-          light: "#FFF0F3",
+          DEFAULT: "#E8A87C",
+          light: "#FFF5EE",
         },
-        point: "#FFD43B",
-        bg: "#F7F8FA",
-        surface: "#FFFFFF",
         t: {
-          DEFAULT: "#191F28",
-          sub: "#6B7684",
-          caption: "#8B95A1",
-          disabled: "#B0B8C1",
-          inverse: "#FFFFFF",
+          DEFAULT: "#1A1A1A",
+          sub: "#888888",
+          caption: "#AAAAAA",
+          disabled: "#CCCCCC",
         },
         line: {
-          DEFAULT: "#F2F3F6",
-          bold: "#E5E8EB",
+          DEFAULT: "#F0EDEA",
+          bold: "#E5E0DB",
         },
       },
       fontFamily: {
@@ -43,19 +41,22 @@ const config: Config = {
           "sans-serif",
         ],
       },
+      letterSpacing: {
+        tight: "-0.02em",
+      },
       boxShadow: {
-        sm: "0 1px 2px rgba(0,0,0,0.04)",
-        card: "0 2px 8px rgba(0,0,0,0.04)",
-        float: "0 4px 16px rgba(0,0,0,0.08)",
+        sm: "0 1px 4px rgba(0,0,0,0.04)",
+        card: "0 2px 12px rgba(0,0,0,0.05)",
+        float: "0 4px 20px rgba(0,0,0,0.08)",
       },
       keyframes: {
         "fade-in": {
-          from: { opacity: "0", transform: "translateY(4px)" },
+          from: { opacity: "0", transform: "translateY(6px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
-        "fade-in": "fade-in 0.3s ease-out forwards",
+        "fade-in": "fade-in 0.35s ease-out forwards",
       },
     },
   },

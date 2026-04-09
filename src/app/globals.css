@@ -3,14 +3,13 @@
 @tailwind utilities;
 
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap");
 
 body {
-  color: #1A1A1A;
-  background: #FAFAF8;
-  font-family: "Pretendard Variable", Pretendard, -apple-system,
-    BlinkMacSystemFont, system-ui, sans-serif;
+  color: #1C2118;
+  background: #FAF9F6;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
-  letter-spacing: -0.01em;
 }
 
 * { -webkit-tap-highlight-color: transparent; }

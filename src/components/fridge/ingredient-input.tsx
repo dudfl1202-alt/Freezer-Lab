@@ -22,22 +22,15 @@ export default function IngredientInput({ ingredients, onAdd, onRemove }: Props)
     setInput("");
   };
 
-  const quickAdd = (name: string) => {
-    if (!ingredients.some(i => i.name === name)) onAdd({ ingredientId: name, name });
-  };
-
   return (
     <div className="space-y-4">
       <form onSubmit={submit} className="flex gap-2">
-        <input
-          type="text" value={input} onChange={e => setInput(e.target.value)}
+        <input type="text" value={input} onChange={e => setInput(e.target.value)}
           placeholder="재료를 입력하세요 (쉼표로 구분)"
-          className="flex-1 px-4 py-3 rounded-lg bg-bg text-[13px]
-                     focus:outline-none focus:ring-1 focus:ring-main placeholder:text-t-disabled transition-all"
-        />
+          className="flex-1 px-4 py-3 rounded-xl bg-bg text-[13px]
+                     focus:outline-none focus:ring-1 focus:ring-olive placeholder:text-t-disabled transition-all" />
         <button type="submit"
-          className="px-5 py-3 rounded-lg bg-main text-white text-[13px] font-bold
-                     active:scale-95 transition-transform shrink-0">
+          className="px-5 py-3 rounded-xl bg-olive text-white text-[13px] font-semibold active:scale-95 transition-transform shrink-0">
           추가
         </button>
       </form>
@@ -46,9 +39,9 @@ export default function IngredientInput({ ingredients, onAdd, onRemove }: Props)
         <div className="flex flex-wrap gap-1.5">
           {ingredients.map(ing => (
             <span key={ing.name}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-main-light text-main text-[13px] font-medium">
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-olive-light text-olive text-[13px] font-medium">
               {ing.name}
-              <button onClick={() => onRemove(ing.name)} className="text-main/40 hover:text-main text-sm ml-0.5">&times;</button>
+              <button onClick={() => onRemove(ing.name)} className="text-olive-muted hover:text-olive text-sm ml-0.5">&times;</button>
             </span>
           ))}
           <button onClick={() => ingredients.forEach(i => onRemove(i.name))}
@@ -57,15 +50,15 @@ export default function IngredientInput({ ingredients, onAdd, onRemove }: Props)
       )}
 
       <div>
-        <p className="text-[12px] text-t-sub font-semibold mb-2">자주 쓰는 재료</p>
+        <p className="text-[11px] text-t-caption uppercase tracking-wider mb-2">Popular Ingredients</p>
         <div className="flex flex-wrap gap-1.5">
           {commonIngredients.map(name => {
             const added = ingredients.some(i => i.name === name);
             return (
-              <button key={name} onClick={() => quickAdd(name)} disabled={added}
+              <button key={name} onClick={() => { if (!added) onAdd({ ingredientId: name, name }); }} disabled={added}
                 className={added
-                  ? "text-[12px] px-2.5 py-1.5 rounded-lg bg-line text-t-disabled"
-                  : "text-[12px] px-2.5 py-1.5 rounded-lg bg-bg text-t-sub hover:text-main active:scale-95 transition-all"
+                  ? "text-[12px] px-3 py-1.5 rounded-full bg-olive-light text-olive-muted"
+                  : "text-[12px] px-3 py-1.5 rounded-full bg-bg text-t-sub hover:bg-olive-light hover:text-olive active:scale-95 transition-all"
                 }>{name}</button>
             );
           })}

@@ -28,11 +28,11 @@ export default function FridgePage() {
   return (
     <>
       <Header />
-      <main className="max-w-lg mx-auto px-5 pt-5 pb-24">
-        <h1 className="text-[18px] font-extrabold tracking-tight text-t">냉장고 털기</h1>
-        <p className="text-[13px] text-t-sub mt-1 mb-5">있는 재료를 입력하면 레시피를 찾아드려요</p>
+      <main className="max-w-lg mx-auto px-5 pt-6 pb-24">
+        <p className="text-[11px] text-t-caption uppercase tracking-wider mb-1">What&apos;s in your fridge?</p>
+        <h1 className="font-serif text-[22px] font-bold text-t mb-5">냉장고 털기</h1>
 
-        <div className="bg-surface rounded-xl shadow-sm p-5 mb-6">
+        <div className="bg-surface rounded-2xl shadow-sm p-5 mb-8">
           <IngredientInput
             ingredients={ingredients}
             onAdd={i => setIngredients(prev => [...prev, i])}
@@ -41,16 +41,13 @@ export default function FridgePage() {
         </div>
 
         {ingredients.length === 0 ? (
-          <p className="text-center text-[13px] text-t-disabled py-16">재료를 입력해보세요</p>
+          <p className="text-center text-[13px] text-t-disabled py-16">재료를 입력하면 레시피를 찾아드려요</p>
         ) : results.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-[13px] text-t-disabled">매칭되는 레시피가 없어요</p>
-            <p className="text-[11px] text-t-disabled mt-1">재료를 더 추가해보세요</p>
-          </div>
+          <p className="text-center text-[13px] text-t-disabled py-16">매칭되는 레시피가 없어요. 재료를 더 추가해보세요.</p>
         ) : (
           <>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[14px] font-bold tracking-tight text-t">추천 레시피</span>
+            <div className="flex items-end justify-between mb-3">
+              <h2 className="font-serif text-[18px] font-bold text-t">Recipes for You</h2>
               <span className="text-[12px] text-t-caption">{results.length}개</span>
             </div>
             <div className="space-y-2.5">

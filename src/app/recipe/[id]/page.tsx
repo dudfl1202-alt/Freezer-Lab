@@ -19,21 +19,23 @@ export default function RecipeDetailPage() {
 
   if (!recipe) return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="w-5 h-5 rounded-full border-2 border-main border-t-transparent animate-spin" />
+      <div className="w-5 h-5 rounded-full border-2 border-olive border-t-transparent animate-spin" />
     </div>
   );
 
   return (
     <main className="max-w-lg mx-auto pb-12">
-      <div className="bg-gradient-to-b from-[#F0F7F4] to-bg pt-4 pb-10 px-5">
-        <Link href="/" className="text-[13px] text-t-sub inline-block mb-6">
-          돌아가기
+      {/* 상단 */}
+      <div className="pt-4 pb-8 px-5">
+        <Link href="/" className="text-[13px] text-t-caption inline-block mb-8">
+          Back
         </Link>
-        <h1 className="text-[22px] font-extrabold tracking-tight text-t">{recipe.title}</h1>
-        <p className="text-[13px] text-t-sub mt-1">{recipe.description}</p>
-        <div className="flex gap-3 mt-3">
-          <span className={`text-[12px] font-bold ${
-            recipe.difficulty === "쉬움" ? "text-main" : recipe.difficulty === "보통" ? "text-sub" : "text-t-sub"
+        <p className="text-[11px] text-t-caption uppercase tracking-wider mb-1">Recipe</p>
+        <h1 className="font-serif text-[24px] font-bold text-t leading-snug">{recipe.title}</h1>
+        <p className="text-[13px] text-t-sub mt-2 leading-relaxed">{recipe.description}</p>
+        <div className="flex gap-4 mt-3">
+          <span className={`text-[12px] font-semibold ${
+            recipe.difficulty === "쉬움" ? "text-olive" : recipe.difficulty === "보통" ? "text-sand" : "text-t-sub"
           }`}>{recipe.difficulty}</span>
           <span className="text-[12px] text-t-caption">{formatTime(recipe.prepTime + recipe.cookTime)}</span>
           <span className="text-[12px] text-t-caption">{formatPrice(recipe.estimatedCost)}</span>
@@ -41,68 +43,76 @@ export default function RecipeDetailPage() {
         </div>
       </div>
 
-      <div className="px-5 -mt-4 space-y-5">
+      <div className="px-5 space-y-6">
         {/* 재료 */}
-        <div className="bg-surface rounded-xl shadow-sm p-5">
-          <p className="text-[14px] font-bold tracking-tight text-t mb-3">
-            재료 <span className="text-t-caption font-normal text-[12px]">{recipe.servings}인분</span>
-          </p>
-          {recipe.ingredients.map(ing => (
-            <div key={ing.ingredientId} className="flex items-center justify-between py-2.5 border-b border-line last:border-0">
-              <div>
-                <span className={`text-[13px] ${ing.optional ? "text-t-caption" : "text-t"}`}>{ing.name}</span>
-                {ing.optional && <span className="text-[10px] text-t-disabled ml-1">선택</span>}
+        <div>
+          <p className="text-[11px] text-t-caption uppercase tracking-wider mb-3">Ingredients · {recipe.servings}인분</p>
+          <div className="bg-surface rounded-2xl shadow-sm p-5">
+            {recipe.ingredients.map(ing => (
+              <div key={ing.ingredientId} className="flex items-center justify-between py-2.5 border-b border-line last:border-0">
+                <div>
+                  <span className={`text-[13px] ${ing.optional ? "text-t-caption" : "text-t"}`}>{ing.name}</span>
+                  {ing.optional && <span className="text-[10px] text-t-disabled ml-1">선택</span>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[13px] text-t-sub">{ing.amount}</span>
+                  <AffiliateLink href={`#coupang-${ing.ingredientId}`} className="text-[11px] text-olive font-semibold">구매</AffiliateLink>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[13px] text-t-sub">{ing.amount}</span>
-                <AffiliateLink href={`#coupang-${ing.ingredientId}`} className="text-[11px] text-main font-semibold">구매</AffiliateLink>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* 만드는 방법 */}
-        <div className="bg-surface rounded-xl shadow-sm p-5">
-          <p className="text-[14px] font-bold tracking-tight text-t mb-4">만드는 방법</p>
-          <ol className="space-y-5">
-            {recipe.steps.map(step => (
-              <li key={step.order} className="flex gap-3">
-                <span className="text-[13px] font-bold text-main shrink-0 w-5 mt-px">{step.order}.</span>
-                <div>
-                  <p className="text-[13px] text-t leading-[1.7]">{step.instruction}</p>
-                  {step.duration && <span className="text-[11px] text-t-caption mt-0.5 block">{formatTime(step.duration)}</span>}
-                  {step.tip && <p className="text-[12px] text-sub mt-1.5 font-medium">{step.tip}</p>}
-                </div>
-              </li>
-            ))}
-          </ol>
+        <div>
+          <p className="text-[11px] text-t-caption uppercase tracking-wider mb-3">Directions</p>
+          <div className="bg-surface rounded-2xl shadow-sm p-5">
+            <ol className="space-y-5">
+              {recipe.steps.map(step => (
+                <li key={step.order} className="flex gap-3">
+                  <span className="text-[13px] font-semibold text-olive shrink-0 w-5 mt-px">{step.order}.</span>
+                  <div>
+                    <p className="text-[13px] text-t leading-[1.7]">{step.instruction}</p>
+                    {step.duration && <span className="text-[11px] text-t-caption mt-0.5 block">{formatTime(step.duration)}</span>}
+                    {step.tip && (
+                      <div className="mt-2 bg-sand-light rounded-xl px-3 py-2">
+                        <p className="text-[12px] text-sand">{step.tip}</p>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
 
         {/* 냉동 가이드 */}
         {(recipe.freezeInstructions || recipe.reheatInstructions) && (
-          <div className="bg-surface rounded-xl shadow-sm p-5">
-            <p className="text-[14px] font-bold tracking-tight text-t mb-3">냉동 & 해동 가이드</p>
-            {recipe.freezeInstructions && (
-              <div className="mb-3">
-                <p className="text-[12px] font-bold text-main mb-0.5">냉동 보관</p>
-                <p className="text-[13px] text-t-sub leading-relaxed">{recipe.freezeInstructions}</p>
-              </div>
-            )}
-            {recipe.reheatInstructions && (
-              <div>
-                <p className="text-[12px] font-bold text-main mb-0.5">해동 & 데우기</p>
-                <p className="text-[13px] text-t-sub leading-relaxed">{recipe.reheatInstructions}</p>
-              </div>
-            )}
-            {recipe.portionsYield && (
-              <p className="text-[12px] text-main font-semibold mt-3 pt-3 border-t border-line">
-                {recipe.portionsYield}인분 소분 가능
-              </p>
-            )}
+          <div>
+            <p className="text-[11px] text-t-caption uppercase tracking-wider mb-3">Freeze & Reheat</p>
+            <div className="bg-olive-light rounded-2xl p-5">
+              {recipe.freezeInstructions && (
+                <div className="mb-3">
+                  <p className="text-[12px] font-semibold text-olive mb-0.5">냉동 보관</p>
+                  <p className="text-[13px] text-t-sub leading-relaxed">{recipe.freezeInstructions}</p>
+                </div>
+              )}
+              {recipe.reheatInstructions && (
+                <div>
+                  <p className="text-[12px] font-semibold text-olive mb-0.5">해동 & 데우기</p>
+                  <p className="text-[13px] text-t-sub leading-relaxed">{recipe.reheatInstructions}</p>
+                </div>
+              )}
+              {recipe.portionsYield && (
+                <p className="text-[12px] text-olive font-medium mt-3 pt-3 border-t border-olive-muted/30">
+                  {recipe.portionsYield}인분 소분 가능
+                </p>
+              )}
+            </div>
           </div>
         )}
 
-        <p className="text-[9px] text-t-disabled text-center pt-2 pb-4">
+        <p className="text-[9px] text-t-disabled text-center pt-4 pb-4">
           쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다
         </p>
       </div>

@@ -9,45 +9,41 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#FAFAF8",
+        bg: "#FAF9F6",
         surface: "#FFFFFF",
-        main: {
-          DEFAULT: "#3D7A5F",
-          light: "#F0F7F4",
-          dark: "#2D5C47",
-          muted: "#A8CCBA",
+        olive: {
+          DEFAULT: "#4A5D4A",
+          light: "#EEF2EC",
+          dark: "#3A4A3A",
+          muted: "#8A9E8A",
         },
-        sub: {
-          DEFAULT: "#E8A87C",
-          light: "#FFF5EE",
+        sand: {
+          DEFAULT: "#C4A97D",
+          light: "#F5F0E8",
         },
         t: {
-          DEFAULT: "#1A1A1A",
-          sub: "#888888",
-          caption: "#AAAAAA",
-          disabled: "#CCCCCC",
+          DEFAULT: "#1C2118",
+          sub: "#6B6B60",
+          caption: "#9C9C90",
+          disabled: "#C8C8C0",
         },
         line: {
-          DEFAULT: "#F0EDEA",
-          bold: "#E5E0DB",
+          DEFAULT: "#EEEEE8",
+          bold: "#E0E0D8",
         },
       },
       fontFamily: {
-        sans: [
-          "Pretendard",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "system-ui",
-          "sans-serif",
-        ],
+        sans: ["Pretendard", "-apple-system", "BlinkMacSystemFont", "system-ui", "sans-serif"],
+        serif: ["Georgia", "'Noto Serif KR'", "serif"],
       },
-      letterSpacing: {
-        tight: "-0.02em",
+      borderRadius: {
+        "2xl": "16px",
+        "3xl": "24px",
+        "4xl": "32px",
       },
       boxShadow: {
-        sm: "0 1px 4px rgba(0,0,0,0.04)",
-        card: "0 2px 12px rgba(0,0,0,0.05)",
-        float: "0 4px 20px rgba(0,0,0,0.08)",
+        sm: "0 1px 3px rgba(0,0,0,0.03)",
+        card: "0 2px 12px rgba(0,0,0,0.04)",
       },
       keyframes: {
         "fade-in": {

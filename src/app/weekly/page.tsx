@@ -37,80 +37,82 @@ export default function WeeklyPage() {
   return (
     <>
       <Header />
-      <main className="max-w-lg mx-auto px-5 pt-5 pb-24">
-        <h1 className="text-[18px] font-extrabold tracking-tight text-t">냉동 밀프랩</h1>
-        <p className="text-[13px] text-t-sub mt-1 mb-5">한 번 만들고 냉동실에 쌓아두세요</p>
+      <main className="max-w-lg mx-auto px-5 pt-6 pb-24">
+        <p className="text-[11px] text-t-caption uppercase tracking-wider mb-1">Meal Prep Planner</p>
+        <h1 className="font-serif text-[22px] font-bold text-t mb-5">냉동 밀프랩</h1>
 
-        <div className="flex border-b border-line mb-5">
+        {/* 플랜 선택 - pill 버튼 */}
+        <div className="flex gap-2 mb-6">
           {weeklyPlans.map(p => (
             <button key={p.id} onClick={() => setSelectedId(p.id)}
               className={selectedId === p.id
-                ? "flex-1 py-3 text-[14px] font-bold text-main border-b-2 border-main"
-                : "flex-1 py-3 text-[14px] text-t-caption"
+                ? "px-5 py-2.5 rounded-full bg-olive text-white text-[13px] font-semibold transition-all"
+                : "px-5 py-2.5 rounded-full bg-surface text-t-sub text-[13px] transition-all border border-line"
               }>{p.title}</button>
           ))}
         </div>
 
         {plan && (
           <div className="animate-fade-in">
-            {/* 통계 */}
-            <div className="bg-surface rounded-xl shadow-sm p-5 mb-5">
-              <p className="text-[13px] text-t-sub mb-5">{plan.description}</p>
+            {/* 설명 + 통계 */}
+            <div className="mb-8">
+              <p className="text-[13px] text-t-sub leading-relaxed mb-5">{plan.description}</p>
               <div className="flex gap-6">
                 <div>
-                  <p className="text-[11px] text-t-caption mb-0.5">총 비용</p>
-                  <p className="text-[20px] font-extrabold text-main tracking-tight">{formatPrice(plan.totalCost)}</p>
+                  <p className="text-[10px] text-t-caption uppercase tracking-wider mb-0.5">Cost</p>
+                  <p className="text-[22px] font-bold text-olive tracking-tight">{formatPrice(plan.totalCost)}</p>
                 </div>
                 <div>
-                  <p className="text-[11px] text-t-caption mb-0.5">준비 시간</p>
-                  <p className="text-[20px] font-extrabold text-sub tracking-tight">{formatTime(plan.prepDay.totalTime)}</p>
+                  <p className="text-[10px] text-t-caption uppercase tracking-wider mb-0.5">Time</p>
+                  <p className="text-[22px] font-bold text-sand tracking-tight">{formatTime(plan.prepDay.totalTime)}</p>
                 </div>
                 <div>
-                  <p className="text-[11px] text-t-caption mb-0.5">냉동 소분</p>
-                  <p className="text-[20px] font-extrabold text-t tracking-tight">{totalPacks}팩</p>
+                  <p className="text-[10px] text-t-caption uppercase tracking-wider mb-0.5">Packs</p>
+                  <p className="text-[22px] font-bold text-t tracking-tight">{totalPacks}</p>
                 </div>
               </div>
             </div>
 
             {/* 완성 메뉴 */}
-            <p className="text-[14px] font-bold tracking-tight text-t mb-3">완성되는 메뉴</p>
-            <div className="mb-6">
-              {recipeIds.map(id => {
-                const r = recipesMap[id];
-                if (!r) return null;
-                return (
-                  <Link key={id} href={`/recipe/${id}`}>
-                    <div className="flex items-center justify-between py-3.5 border-b border-line last:border-0 active:bg-bg transition-colors">
-                      <div>
-                        <p className="text-[14px] font-bold tracking-tight text-t">{r.title}</p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          {r.portionsYield && <span className="text-[11px] text-main font-semibold">{r.portionsYield}팩</span>}
-                          {r.reheatInstructions && <span className="text-[11px] text-t-caption">{r.reheatInstructions}</span>}
-                        </div>
+            <div className="mb-8">
+              <p className="text-[11px] text-t-caption uppercase tracking-wider mb-3">What You&apos;ll Make</p>
+              <div className="grid grid-cols-2 gap-3">
+                {recipeIds.map(id => {
+                  const r = recipesMap[id];
+                  if (!r) return null;
+                  return (
+                    <Link key={id} href={`/recipe/${id}`}>
+                      <div className="bg-olive-light rounded-2xl p-4 h-[100px] flex flex-col justify-end active:scale-[0.97] transition-transform">
+                        <p className="text-[14px] font-bold text-t">{r.title}</p>
+                        <p className="text-[11px] text-t-caption mt-0.5">
+                          {r.portionsYield}팩 · {r.reheatInstructions}
+                        </p>
                       </div>
-                    </div>
-                  </Link>
-                );
-              })}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
 
             {/* 체크리스트 */}
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[14px] font-bold tracking-tight text-t">준비 체크리스트</p>
-              <span className="text-[11px] text-t-caption">총 {formatTime(plan.prepDay.totalTime)}</span>
-            </div>
-            <div className="bg-surface rounded-xl shadow-sm p-5">
-              <ol className="space-y-5">
-                {plan.prepDay.tasks.map(task => (
-                  <li key={task.order} className="flex gap-3">
-                    <span className="text-[13px] font-bold text-main shrink-0 w-5 mt-px">{task.order}.</span>
-                    <div>
-                      <p className="text-[13px] text-t leading-[1.7]">{task.instruction}</p>
-                      <span className="text-[11px] text-t-caption mt-0.5 block">{formatTime(task.duration)}</span>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+            <div>
+              <div className="flex items-end justify-between mb-3">
+                <p className="text-[11px] text-t-caption uppercase tracking-wider">Prep Checklist</p>
+                <span className="text-[11px] text-t-caption">{formatTime(plan.prepDay.totalTime)}</span>
+              </div>
+              <div className="bg-surface rounded-2xl shadow-sm p-5">
+                <ol className="space-y-5">
+                  {plan.prepDay.tasks.map(task => (
+                    <li key={task.order} className="flex gap-3">
+                      <span className="text-[13px] font-semibold text-olive shrink-0 w-5 mt-px">{task.order}.</span>
+                      <div>
+                        <p className="text-[13px] text-t leading-[1.7]">{task.instruction}</p>
+                        <span className="text-[11px] text-t-caption mt-0.5 block">{formatTime(task.duration)}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           </div>
         )}

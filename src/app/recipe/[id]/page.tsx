@@ -51,7 +51,10 @@ export default function RecipeDetailPage() {
 
         {/* 재료 */}
         <div>
-          <p className="text-[11px] text-t-caption uppercase tracking-wider mb-3">Ingredients · {recipe.servings}인분</p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[11px] text-t-caption uppercase tracking-wider">Ingredients · {recipe.servings}인분</p>
+            <p className="text-[10px] text-t-disabled">* 가격 변동 있음</p>
+          </div>
           <div className="bg-surface rounded-2xl shadow-sm p-5">
             {recipe.ingredients.map(ing => (
               <div key={ing.ingredientId} className="flex items-center justify-between py-2.5 border-b border-line last:border-0">

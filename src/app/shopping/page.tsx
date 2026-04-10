@@ -33,7 +33,10 @@ function Plan({ plan }: { plan: ShoppingPlan }) {
         </div>
       </div>
 
-      <p className="text-[11px] text-t-caption uppercase tracking-wider mb-3">Shopping List</p>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[11px] text-t-caption uppercase tracking-wider">Shopping List</p>
+        <p className="text-[10px] text-t-disabled">* 가격은 참고용 · 시기·할인 따라 변동</p>
+      </div>
       {plan.shoppingList.map(item => (
         <div key={item.ingredientId} className="flex items-center justify-between py-2.5 border-b border-line last:border-0">
           <div>

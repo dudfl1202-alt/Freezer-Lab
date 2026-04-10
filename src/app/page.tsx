@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FreezerDrawer from "@/components/freezer/freezer-drawer";
 
 export default function Home() {
   return (
@@ -68,6 +69,11 @@ export default function Home() {
             </Link>
           ))}
         </div>
+      </div>
+
+      {/* 내 냉동실 섹션 */}
+      <div className="px-5 max-w-lg mx-auto mb-8">
+        <FreezerDrawer />
       </div>
 
       {/* 스마트 장보기 섹션 */}

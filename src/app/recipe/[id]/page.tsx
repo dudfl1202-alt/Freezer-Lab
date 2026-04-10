@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Recipe } from "@/types";
 import { formatPrice, formatTime } from "@/lib/utils";
 import AffiliateLink from "@/components/shared/affiliate-link";
+import { FreezerTrackerButton } from "@/components/freezer/freezer-tracker";
 
 export default function RecipeDetailPage() {
   const params = useParams();
@@ -85,6 +86,9 @@ export default function RecipeDetailPage() {
             </ol>
           </div>
         </div>
+
+        {/* 냉동 보관 시작 */}
+        <FreezerTrackerButton recipeId={recipe.id} recipeName={recipe.title} />
 
         {/* 냉동 가이드 */}
         {(recipe.freezeInstructions || recipe.reheatInstructions) && (

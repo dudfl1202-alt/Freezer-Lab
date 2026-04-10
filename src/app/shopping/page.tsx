@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import Header from "@/components/layout/header";
 import BottomNav from "@/components/layout/bottom-nav";
 import AffiliateLink from "@/components/shared/affiliate-link";
+import AffiliateDisclosure from "@/components/shared/affiliate-disclosure";
 import { shoppingPlans } from "@/data/shopping-plans";
 import { formatPrice } from "@/lib/utils";
 import { ShoppingPlan } from "@/types";
@@ -41,9 +42,7 @@ function Plan({ plan }: { plan: ShoppingPlan }) {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-[12px] text-t-sub">{formatPrice(item.estimatedPrice)}</span>
-            {item.affiliateUrl && (
-              <AffiliateLink href={item.affiliateUrl} className="text-[11px] text-olive font-semibold">구매</AffiliateLink>
-            )}
+            <AffiliateLink keyword={item.name} className="text-[11px] text-olive font-semibold">구매</AffiliateLink>
           </div>
         </div>
       ))}
@@ -94,13 +93,14 @@ export default function ShoppingPage() {
           ))}
         </div>
 
+        {/* 쿠팡 파트너스 공지 */}
+        <AffiliateDisclosure variant="prominent" className="mb-4" />
+
         <div className="space-y-4">
           {filtered.map(p => <Plan key={p.id} plan={p} />)}
         </div>
 
-        <div className="mt-6 text-center">
-          <p className="text-[9px] text-t-disabled">쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다</p>
-        </div>
+        <AffiliateDisclosure variant="inline" className="mt-6 text-center" />
       </main>
       <BottomNav />
     </>

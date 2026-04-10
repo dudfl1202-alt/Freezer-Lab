@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Recipe } from "@/types";
 import { formatPrice, formatTime } from "@/lib/utils";
 import AffiliateLink from "@/components/shared/affiliate-link";
+import AffiliateDisclosure from "@/components/shared/affiliate-disclosure";
 import { FreezerTrackerButton } from "@/components/freezer/freezer-tracker";
 
 export default function RecipeDetailPage() {
@@ -45,6 +46,9 @@ export default function RecipeDetailPage() {
       </div>
 
       <div className="px-5 space-y-6">
+        {/* 쿠팡 파트너스 공지 */}
+        <AffiliateDisclosure variant="prominent" />
+
         {/* 재료 */}
         <div>
           <p className="text-[11px] text-t-caption uppercase tracking-wider mb-3">Ingredients · {recipe.servings}인분</p>
@@ -57,7 +61,7 @@ export default function RecipeDetailPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[13px] text-t-sub">{ing.amount}</span>
-                  <AffiliateLink href={`#coupang-${ing.ingredientId}`} className="text-[11px] text-olive font-semibold">구매</AffiliateLink>
+                  <AffiliateLink keyword={ing.name} className="text-[11px] text-olive font-semibold">구매</AffiliateLink>
                 </div>
               </div>
             ))}
@@ -116,9 +120,7 @@ export default function RecipeDetailPage() {
           </div>
         )}
 
-        <p className="text-[9px] text-t-disabled text-center pt-4 pb-4">
-          쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다
-        </p>
+        <AffiliateDisclosure variant="inline" className="text-center pt-4 pb-4" />
       </div>
     </main>
   );

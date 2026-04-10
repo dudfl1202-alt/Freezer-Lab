@@ -13,3 +13,7 @@ body {
 }
 
 * { -webkit-tap-highlight-color: transparent; }
+
+/* 스크롤바 숨김 (가로 스크롤 탭용) */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

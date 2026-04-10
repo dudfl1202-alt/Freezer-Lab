@@ -41,13 +41,13 @@ export default function WeeklyPage() {
         <p className="text-[11px] text-t-caption uppercase tracking-wider mb-1">Meal Prep Planner</p>
         <h1 className="font-serif text-[22px] font-bold text-t mb-5">냉동 밀프랩</h1>
 
-        {/* 플랜 선택 - pill 버튼 */}
-        <div className="flex gap-2 mb-6">
+        {/* 플랜 선택 - pill 버튼 (가로 스크롤) */}
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-1 -mx-5 px-5 scrollbar-hide">
           {weeklyPlans.map(p => (
             <button key={p.id} onClick={() => setSelectedId(p.id)}
               className={selectedId === p.id
-                ? "px-5 py-2.5 rounded-full bg-olive text-white text-[13px] font-semibold transition-all"
-                : "px-5 py-2.5 rounded-full bg-surface text-t-sub text-[13px] transition-all border border-line"
+                ? "shrink-0 px-5 py-2.5 rounded-full bg-olive text-white text-[13px] font-semibold transition-all whitespace-nowrap"
+                : "shrink-0 px-5 py-2.5 rounded-full bg-surface text-t-sub text-[13px] transition-all border border-line whitespace-nowrap"
               }>{p.title}</button>
           ))}
         </div>

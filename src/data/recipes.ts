@@ -1,6 +1,7 @@
 import { Recipe } from "@/types";
 import { recipesA } from "./recipes-a";
 import { recipesB } from "./recipes-b";
+import { allMealprepRecipes } from "./recipes-mealprep";
 
 const baseRecipes: Recipe[] = [
   {
@@ -780,4 +781,9 @@ const baseRecipes: Recipe[] = [
   },
 ];
 
-export const recipes: Recipe[] = [...baseRecipes, ...recipesA, ...recipesB];
+export const recipes: Recipe[] = [
+  ...baseRecipes,
+  ...recipesA,
+  ...recipesB,
+  ...allMealprepRecipes,
+];

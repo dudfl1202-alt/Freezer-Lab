@@ -6,7 +6,7 @@ import { FreezerItemList } from "@/components/freezer/freezer-tracker";
 
 export default function FreezerDrawer() {
   const [open, setOpen] = useState(false);
-  const { totalCount, hasUrgent, mounted } = useFreezerStorage();
+  const { totalCount, totalPacks, hasUrgent, mounted } = useFreezerStorage();
 
   return (
     <section>
@@ -15,21 +15,21 @@ export default function FreezerDrawer() {
       </p>
 
       <div
-        className="rounded-2xl overflow-hidden transition-shadow"
+        className="rounded-2xl overflow-hidden transition-shadow duration-300"
         style={{
           background: "#F0F7FF",
           border: "1px solid #D0E8F5",
-          boxShadow: open ? "0 4px 12px rgba(0,0,0,0.08)" : "none",
+          boxShadow: open ? "0 4px 16px rgba(58,96,136,0.12)" : "0 1px 3px rgba(0,0,0,0.03)",
         }}
       >
         {/* Header */}
         <button
           onClick={() => setOpen((v) => !v)}
-          className="w-full text-left"
+          className="w-full text-left active:bg-[#E8F1FA] transition-colors"
           aria-expanded={open}
         >
           {/* 손잡이 바 */}
-          <div className="flex justify-center pt-3 pb-1.5">
+          <div className="flex justify-center pt-3 pb-1">
             <div
               style={{
                 width: 40,
@@ -40,27 +40,41 @@ export default function FreezerDrawer() {
             />
           </div>
 
-          <div className="px-5 pb-4 pt-1 flex items-center justify-between">
+          <div className="px-5 pb-4 pt-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <h3 className="font-serif text-[16px] font-bold text-t">내 냉동실</h3>
+              <h3 className="font-serif text-[17px] font-bold text-t">내 냉동실</h3>
               {mounted && hasUrgent && (
-                <span
-                  className="inline-block w-2 h-2 rounded-full"
-                  style={{ background: "#F44336" }}
-                  aria-label="주의 필요한 항목 있음"
-                />
+                <span className="relative inline-flex items-center justify-center">
+                  <span
+                    className="absolute inline-flex h-3 w-3 rounded-full opacity-75 animate-ping"
+                    style={{ background: "#F44336" }}
+                  />
+                  <span
+                    className="relative inline-flex w-2 h-2 rounded-full"
+                    style={{ background: "#F44336" }}
+                  />
+                </span>
               )}
             </div>
             <div className="flex items-center gap-2">
-              {mounted && (
+              {mounted && totalCount > 0 && (
+                <div className="flex items-center gap-1">
+                  <span
+                    className="text-[11px] font-bold px-2.5 py-1 rounded-full"
+                    style={{ background: "#FFFFFF", color: "#3B82C4" }}
+                  >
+                    {totalCount}개 · {totalPacks}팩
+                  </span>
+                </div>
+              )}
+              {mounted && totalCount === 0 && (
                 <span
-                  className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
-                  style={{ background: "#FFFFFF", color: "#3B82C4" }}
+                  className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
+                  style={{ background: "#FFFFFF", color: "#9CB3C7" }}
                 >
-                  {totalCount}개 보관 중
+                  비어있음
                 </span>
               )}
-              {/* 화살표 */}
               <svg
                 width="14"
                 height="14"
@@ -83,10 +97,10 @@ export default function FreezerDrawer() {
           </div>
         </button>
 
-        {/* Content - 애니메이션 영역 */}
+        {/* Content */}
         <div
           style={{
-            maxHeight: open ? "600px" : "0px",
+            maxHeight: open ? "1200px" : "0px",
             overflow: "hidden",
             transition: open
               ? "max-height 400ms cubic-bezier(0.4,0,0.2,1)"

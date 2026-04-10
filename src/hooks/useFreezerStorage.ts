@@ -9,16 +9,31 @@ export interface FreezerItem {
   startDate: string; // YYYY-MM-DD
   totalPacks: number;
   remainingPacks: number;
+  freezeLimitDays: number; // 레시피별 냉동 한도 (기본 30일)
 }
 
-const STORAGE_KEY = "freezer-items";
-const FREEZE_LIMIT_DAYS = 30;
+const STORAGE_KEY = "freezer-items-v2";
+const DEFAULT_LIMIT = 30;
 
 function read(): FreezerItem[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) {
+      // v1 → v2 마이그레이션
+      const oldRaw = localStorage.getItem("freezer-items");
+      if (oldRaw) {
+        const old = JSON.parse(oldRaw);
+        const migrated = old.map((i: FreezerItem & { freezeLimitDays?: number }) => ({
+          ...i,
+          freezeLimitDays: i.freezeLimitDays ?? DEFAULT_LIMIT,
+        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+        return migrated;
+      }
+      return [];
+    }
+    return JSON.parse(raw);
   } catch {
     return [];
   }
@@ -30,8 +45,13 @@ function write(items: FreezerItem[]) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     window.dispatchEvent(new Event("freezer-storage-updated"));
   } catch {
-    // ignore quota errors
+    // quota exceeded
   }
+}
+
+function todayISO(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 export function daysSince(startDate: string): number {
@@ -39,40 +59,39 @@ export function daysSince(startDate: string): number {
   const now = new Date();
   start.setHours(0, 0, 0, 0);
   now.setHours(0, 0, 0, 0);
-  const diff = now.getTime() - start.getTime();
-  return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+  return Math.max(0, Math.floor((now.getTime() - start.getTime()) / 86400000));
 }
 
-export function daysRemaining(startDate: string): number {
-  return FREEZE_LIMIT_DAYS - daysSince(startDate);
+export function daysRemaining(startDate: string, limit: number = DEFAULT_LIMIT): number {
+  return limit - daysSince(startDate);
 }
 
-export type FreshnessStatus = "fresh" | "soon" | "urgent";
+export type FreshnessStatus = "fresh" | "soon" | "urgent" | "expired";
 
-export function getFreshnessStatus(startDate: string): FreshnessStatus {
-  const elapsed = daysSince(startDate);
-  if (elapsed <= 14) return "fresh";
-  if (elapsed <= 25) return "soon";
-  return "urgent";
+export function getFreshnessStatus(startDate: string, limit: number = DEFAULT_LIMIT): FreshnessStatus {
+  const remaining = daysRemaining(startDate, limit);
+  if (remaining <= 0) return "expired";
+  if (remaining <= 4) return "urgent";
+  if (remaining <= 15) return "soon";
+  return "fresh";
 }
 
 export function getStatusInfo(status: FreshnessStatus) {
   switch (status) {
     case "fresh":
-      return { color: "#4CAF50", label: "신선해요", bg: "#E8F5E9" };
+      return { color: "#4CAF50", label: "신선해요", bg: "#E8F5E9", borderColor: "#C8E6C9" };
     case "soon":
-      return { color: "#FF9800", label: "곧 드세요", bg: "#FFF3E0" };
+      return { color: "#FF9800", label: "곧 드세요", bg: "#FFF3E0", borderColor: "#FFE0B2" };
     case "urgent":
-      return { color: "#F44336", label: "빨리 드세요!", bg: "#FFEBEE" };
+      return { color: "#F44336", label: "빨리 드세요!", bg: "#FFEBEE", borderColor: "#FFCDD2" };
+    case "expired":
+      return { color: "#9E9E9E", label: "기한 지남", bg: "#F5F5F5", borderColor: "#E0E0E0" };
   }
 }
 
-function todayISO(): string {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
+export function getProgressPercent(startDate: string, limit: number = DEFAULT_LIMIT): number {
+  const elapsed = daysSince(startDate);
+  return Math.min(100, Math.max(0, (elapsed / limit) * 100));
 }
 
 export function useFreezerStorage() {
@@ -82,7 +101,6 @@ export function useFreezerStorage() {
   useEffect(() => {
     setItems(read());
     setMounted(true);
-
     const handler = () => setItems(read());
     window.addEventListener("freezer-storage-updated", handler);
     window.addEventListener("storage", handler);
@@ -93,14 +111,21 @@ export function useFreezerStorage() {
   }, []);
 
   const addItem = useCallback(
-    (recipeId: string, recipeName: string, totalPacks: number) => {
+    (
+      recipeId: string,
+      recipeName: string,
+      totalPacks: number,
+      startDate: string = todayISO(),
+      freezeLimitDays: number = DEFAULT_LIMIT
+    ) => {
       const newItem: FreezerItem = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
         recipeId,
         recipeName,
-        startDate: todayISO(),
+        startDate,
         totalPacks,
         remainingPacks: totalPacks,
+        freezeLimitDays,
       };
       const next = [...read(), newItem];
       write(next);
@@ -110,22 +135,60 @@ export function useFreezerStorage() {
     []
   );
 
+  const consumePack = useCallback((id: string) => {
+    const current = read();
+    const target = current.find((i) => i.id === id);
+    if (!target) return;
+    if (target.remainingPacks <= 1) {
+      const next = current.filter((i) => i.id !== id);
+      write(next);
+      setItems(next);
+    } else {
+      const next = current.map((i) =>
+        i.id === id ? { ...i, remainingPacks: i.remainingPacks - 1 } : i
+      );
+      write(next);
+      setItems(next);
+    }
+  }, []);
+
+  const updateItem = useCallback((id: string, updates: Partial<FreezerItem>) => {
+    const next = read().map((i) => (i.id === id ? { ...i, ...updates } : i));
+    write(next);
+    setItems(next);
+  }, []);
+
   const removeItem = useCallback((id: string) => {
     const next = read().filter((i) => i.id !== id);
     write(next);
     setItems(next);
   }, []);
 
-  const hasUrgent = items.some(
-    (i) => getFreshnessStatus(i.startDate) === "urgent"
-  );
+  // 정렬: 급한 순서 → 오래된 순서
+  const sortedItems = [...items].sort((a, b) => {
+    const ra = daysRemaining(a.startDate, a.freezeLimitDays);
+    const rb = daysRemaining(b.startDate, b.freezeLimitDays);
+    return ra - rb;
+  });
+
+  const hasUrgent = items.some((i) => {
+    const s = getFreshnessStatus(i.startDate, i.freezeLimitDays);
+    return s === "urgent" || s === "expired";
+  });
+
+  const totalPacks = items.reduce((sum, i) => sum + i.remainingPacks, 0);
 
   return {
-    items,
+    items: sortedItems,
     mounted,
     addItem,
+    consumePack,
+    updateItem,
     removeItem,
     hasUrgent,
     totalCount: items.length,
+    totalPacks,
   };
 }
+
+export { todayISO, DEFAULT_LIMIT };

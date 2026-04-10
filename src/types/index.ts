@@ -45,7 +45,11 @@ export interface Recipe {
   reheatInstructions?: string;
   portionsYield?: number;
   estimatedCost: number;
+  /** 냉동 밀프랩 카테고리 (weekly 모드일 때 사용) */
+  freezerCategory?: FreezerCategory;
 }
+
+export type FreezerCategory = "가성비" | "다이어트";
 
 export type RecipeMode = "fridge" | "shopping" | "weekly";
 

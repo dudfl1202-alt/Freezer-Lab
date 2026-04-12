@@ -7,6 +7,7 @@ import BottomNav from "@/components/layout/bottom-nav";
 import AffiliateDisclosure from "@/components/shared/affiliate-disclosure";
 import { allMealprepRecipes, getMealprepRecipesByBudget } from "@/data/recipes-mealprep";
 import { formatPrice, formatTime } from "@/lib/utils";
+import { getRecipeTone } from "@/lib/recipe-tone";
 import { BudgetTier, Recipe, FreezerCategory } from "@/types";
 
 const tiers: BudgetTier[] = ["1만원", "2만원", "3만원"];
@@ -120,55 +121,64 @@ export default function ShoppingPage() {
 }
 
 function RecipeRow({ recipe }: { recipe: Recipe }) {
-  const isRaw = recipe.prepStyle === "raw";
+  const tone = getRecipeTone(recipe);
   return (
     <Link href={`/recipe/${recipe.id}`} className="block">
-      <div className="bg-surface rounded-2xl shadow-sm p-4 active:scale-[0.98] transition-transform">
-        <div className="flex items-start gap-3">
-          <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-            style={{ background: isRaw ? "#F0F7FF" : "#EEF2EC" }}
+      <article
+        className="rounded-2xl shadow-sm overflow-hidden border border-line active:scale-[0.98] transition-transform bg-surface"
+      >
+        <div
+          className="px-4 py-2 flex items-center justify-between"
+          style={{ background: tone.blockBg }}
+        >
+          <p
+            className="text-[10px] font-bold uppercase tracking-[0.1em]"
+            style={{ color: tone.blockText }}
           >
-            {recipe.imageEmoji}
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-              <h3 className="font-bold text-[14px] tracking-tight text-t truncate">
-                {recipe.title}
-              </h3>
-              {isRaw && (
-                <span
-                  className="text-[9px] font-bold px-1.5 py-0.5 rounded"
-                  style={{ background: "#D0E8F5", color: "#3B82C4" }}
-                >
-                  재료냉동
+            {tone.categoryLabel}
+            {tone.subLabel && (
+              <span className="ml-1.5 font-medium opacity-70 normal-case tracking-normal">
+                · {tone.subLabel}
+              </span>
+            )}
+          </p>
+          <p
+            className="text-[12px] font-bold tracking-tight"
+            style={{ color: tone.blockText }}
+          >
+            {formatPrice(recipe.estimatedCost)}
+          </p>
+        </div>
+        <div className="px-4 py-3">
+          <h3 className="font-serif text-[15px] font-bold text-t leading-tight">
+            {recipe.title}
+          </h3>
+          <p className="text-[12px] text-t-caption mt-1 line-clamp-1">
+            {recipe.description}
+          </p>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-[11px] text-t-sub">
+              {formatTime(recipe.prepTime + recipe.cookTime)}
+            </span>
+            {recipe.calories && (
+              <>
+                <span className="text-[10px] text-t-disabled">·</span>
+                <span className="text-[11px] text-t-sub">
+                  {recipe.calories}kcal
                 </span>
-              )}
-            </div>
-            <p className="text-[12px] text-t-caption mt-0.5 line-clamp-1">
-              {recipe.description}
-            </p>
-            <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-              <span
-                className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
-                  recipe.freezerCategory === "다이어트"
-                    ? "bg-sand-light text-sand"
-                    : "bg-olive-light text-olive"
-                }`}
-              >
-                {recipe.freezerCategory}
-              </span>
-              <span className="text-[11px] text-t-caption">
-                {formatTime(recipe.prepTime + recipe.cookTime)}
-              </span>
-              <span className="text-[11px] text-t-caption">·</span>
-              <span className="text-[11px] text-t-sub font-semibold">
-                {formatPrice(recipe.estimatedCost)}/끼
-              </span>
-            </div>
+              </>
+            )}
+            {recipe.portionsYield && (
+              <>
+                <span className="text-[10px] text-t-disabled">·</span>
+                <span className="text-[11px] text-t-sub">
+                  {recipe.portionsYield}팩
+                </span>
+              </>
+            )}
           </div>
         </div>
-      </div>
+      </article>
     </Link>
   );
 }

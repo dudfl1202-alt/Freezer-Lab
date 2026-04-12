@@ -8,6 +8,7 @@ import { formatPrice, formatTime } from "@/lib/utils";
 import AffiliateLink from "@/components/shared/affiliate-link";
 import AffiliateDisclosure from "@/components/shared/affiliate-disclosure";
 import { FreezerTrackerButton } from "@/components/freezer/freezer-tracker";
+import { getRecipeTone } from "@/lib/recipe-tone";
 
 export default function RecipeDetailPage() {
   const params = useParams();
@@ -33,25 +34,80 @@ export default function RecipeDetailPage() {
     </div>
   );
 
+  const tone = getRecipeTone(recipe);
+
   return (
     <main className="max-w-lg mx-auto pb-12">
-      {/* 상단 */}
-      <div className="pt-4 pb-8 px-5">
-        <Link href="/" className="text-[13px] text-t-caption inline-block mb-8">
-          Back
+      {/* 컬러 헤더 */}
+      <header
+        className="px-5 pt-4 pb-10"
+        style={{ background: tone.blockBg }}
+      >
+        <Link
+          href="/"
+          className="text-[13px] inline-block mb-8 font-medium"
+          style={{ color: tone.blockText }}
+        >
+          ← Back
         </Link>
-        <p className="text-[11px] text-t-caption uppercase tracking-wider mb-1">Recipe</p>
-        <h1 className="font-serif text-[24px] font-bold text-t leading-snug">{recipe.title}</h1>
-        <p className="text-[13px] text-t-sub mt-2 leading-relaxed">{recipe.description}</p>
-        <div className="flex gap-4 mt-3">
-          <span className={`text-[12px] font-semibold ${
-            recipe.difficulty === "쉬움" ? "text-olive" : recipe.difficulty === "보통" ? "text-sand" : "text-t-sub"
-          }`}>{recipe.difficulty}</span>
-          <span className="text-[12px] text-t-caption">{formatTime(recipe.prepTime + recipe.cookTime)}</span>
-          <span className="text-[12px] text-t-caption">{formatPrice(recipe.estimatedCost)}</span>
-          {recipe.calories && <span className="text-[12px] text-t-caption">{recipe.calories}kcal</span>}
+        <p
+          className="text-[10px] font-bold uppercase tracking-[0.15em] mb-2"
+          style={{ color: tone.blockText }}
+        >
+          {tone.categoryLabel}
+          {tone.subLabel && (
+            <span className="ml-1.5 font-medium opacity-70 normal-case tracking-normal">
+              · {tone.subLabel}
+            </span>
+          )}
+        </p>
+        <h1 className="font-serif text-[26px] font-bold text-t leading-tight">
+          {recipe.title}
+        </h1>
+        <p className="text-[13px] text-t-sub mt-2 leading-relaxed">
+          {recipe.description}
+        </p>
+        <div className="flex items-center gap-3 mt-5">
+          <div>
+            <p className="text-[9px] text-t-caption uppercase tracking-wider">Cost</p>
+            <p
+              className="text-[16px] font-bold tracking-tight"
+              style={{ color: tone.blockText }}
+            >
+              {formatPrice(recipe.estimatedCost)}
+            </p>
+          </div>
+          <div className="w-px h-7 bg-line-bold" />
+          <div>
+            <p className="text-[9px] text-t-caption uppercase tracking-wider">Time</p>
+            <p className="text-[16px] font-bold text-t tracking-tight">
+              {formatTime(recipe.prepTime + recipe.cookTime)}
+            </p>
+          </div>
+          {recipe.calories && (
+            <>
+              <div className="w-px h-7 bg-line-bold" />
+              <div>
+                <p className="text-[9px] text-t-caption uppercase tracking-wider">
+                  Cal
+                </p>
+                <p className="text-[16px] font-bold text-t tracking-tight">
+                  {recipe.calories}
+                </p>
+              </div>
+            </>
+          )}
+          <div className="w-px h-7 bg-line-bold" />
+          <div>
+            <p className="text-[9px] text-t-caption uppercase tracking-wider">
+              Level
+            </p>
+            <p className="text-[16px] font-bold text-t tracking-tight">
+              {recipe.difficulty}
+            </p>
+          </div>
         </div>
-      </div>
+      </header>
 
       <div className="px-5 space-y-6">
         {/* 쿠팡 파트너스 공지 */}

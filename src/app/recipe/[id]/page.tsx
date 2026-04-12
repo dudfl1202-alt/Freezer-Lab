@@ -14,8 +14,16 @@ export default function RecipeDetailPage() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
-    import("@/data/recipes").then(m => {
-      setRecipe(m.recipes.find((r: Recipe) => r.id === params.id) ?? null);
+    Promise.all([
+      import("@/data/recipes"),
+      import("@/data/recipes-mealprep"),
+    ]).then(([base, mealprep]) => {
+      const id = params.id as string;
+      const found =
+        mealprep.allMealprepRecipes.find((r: Recipe) => r.id === id) ??
+        base.recipes.find((r: Recipe) => r.id === id) ??
+        null;
+      setRecipe(found);
     });
   }, [params.id]);
 

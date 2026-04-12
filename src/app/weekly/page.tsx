@@ -4,19 +4,29 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import Header from "@/components/layout/header";
 import BottomNav from "@/components/layout/bottom-nav";
-import { budgetMealprepRecipes, dietMealprepRecipes, mealprepStats } from "@/data/recipes-mealprep";
+import {
+  budgetMealprepRecipes,
+  dietMealprepRecipes,
+  mealprepStats,
+} from "@/data/recipes-mealprep";
 import { formatPrice, formatTime } from "@/lib/utils";
-import { Recipe, FreezerCategory } from "@/types";
+import { Recipe, FreezerCategory, PrepStyle } from "@/types";
 
 type SortMode = "추천순" | "가격순" | "칼로리순" | "조리시간순";
+type StyleFilter = "all" | PrepStyle;
 
 export default function WeeklyPage() {
   const [category, setCategory] = useState<FreezerCategory>("가성비");
+  const [styleFilter, setStyleFilter] = useState<StyleFilter>("all");
   const [sortMode, setSortMode] = useState<SortMode>("추천순");
 
   const recipes = useMemo(() => {
     const base = category === "가성비" ? budgetMealprepRecipes : dietMealprepRecipes;
-    const sorted = [...base];
+    let filtered = base;
+    if (styleFilter !== "all") {
+      filtered = filtered.filter((r) => r.prepStyle === styleFilter);
+    }
+    const sorted = [...filtered];
     switch (sortMode) {
       case "가격순":
         return sorted.sort((a, b) => a.estimatedCost - b.estimatedCost);
@@ -29,18 +39,7 @@ export default function WeeklyPage() {
       default:
         return sorted;
     }
-  }, [category, sortMode]);
-
-  const stats = useMemo(() => {
-    const total = recipes.length;
-    const avgCost = Math.round(
-      recipes.reduce((s, r) => s + r.estimatedCost, 0) / total
-    );
-    const avgCalories = Math.round(
-      recipes.reduce((s, r) => s + (r.calories ?? 0), 0) / total
-    );
-    return { total, avgCost, avgCalories };
-  }, [recipes]);
+  }, [category, styleFilter, sortMode]);
 
   return (
     <>
@@ -54,12 +53,13 @@ export default function WeeklyPage() {
           <h1 className="font-serif text-[24px] font-bold text-t">냉동 밀프랩</h1>
           <p className="text-[13px] text-t-sub mt-1.5 leading-relaxed">
             한 번에 대량 조리해서 냉동실에 쌓아두세요.<br />
-            전부 냉동 보관 가능한 레시피 <span className="font-bold text-olive">{mealprepStats.total}개</span>
+            전부 냉동 보관 가능한 레시피{" "}
+            <span className="font-bold text-olive">{mealprepStats.total}개</span>
           </p>
         </div>
 
         {/* 카테고리 탭 (가성비/다이어트) */}
-        <div className="grid grid-cols-2 gap-2 mb-5">
+        <div className="grid grid-cols-2 gap-2 mb-4">
           <button
             onClick={() => setCategory("가성비")}
             className={
@@ -88,49 +88,71 @@ export default function WeeklyPage() {
           </button>
         </div>
 
-        {/* 통계 */}
-        <div className="flex gap-4 mb-5 px-1">
-          <div>
-            <p className="text-[10px] text-t-caption uppercase tracking-wider mb-0.5">Total</p>
-            <p className="text-[18px] font-bold text-t tracking-tight">{stats.total}개</p>
-          </div>
-          <div>
-            <p className="text-[10px] text-t-caption uppercase tracking-wider mb-0.5">Avg Cost</p>
-            <p className="text-[18px] font-bold text-olive tracking-tight">
-              {formatPrice(stats.avgCost)}
-            </p>
-          </div>
-          <div>
-            <p className="text-[10px] text-t-caption uppercase tracking-wider mb-0.5">Avg Cal</p>
-            <p className="text-[18px] font-bold text-sand tracking-tight">
-              {stats.avgCalories}kcal
-            </p>
+        {/* 조리방식 필터 */}
+        <div className="bg-surface rounded-2xl border border-line p-3 mb-4">
+          <p className="text-[10px] text-t-caption uppercase tracking-wider mb-2 font-semibold">
+            냉동 방식
+          </p>
+          <div className="flex gap-1.5">
+            {([
+              { id: "all", label: "전체", desc: "" },
+              { id: "cooked", label: "조리 후 냉동", desc: "전자레인지 해동" },
+              { id: "raw", label: "재료 냉동", desc: "끓는 물에 즉석 조리" },
+            ] as const).map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => setStyleFilter(opt.id as StyleFilter)}
+                className={
+                  styleFilter === opt.id
+                    ? "flex-1 px-2 py-2 rounded-lg bg-olive text-white text-[11px] font-semibold transition-all"
+                    : "flex-1 px-2 py-2 rounded-lg bg-bg text-t-sub text-[11px] transition-all"
+                }
+              >
+                <p>{opt.label}</p>
+                {opt.desc && (
+                  <p className="text-[9px] opacity-70 mt-0.5">{opt.desc}</p>
+                )}
+              </button>
+            ))}
           </div>
         </div>
 
         {/* 정렬 */}
-        <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide -mx-5 px-5">
-          {(["추천순", "가격순", "칼로리순", "조리시간순"] as SortMode[]).map((mode) => (
-            <button
-              key={mode}
-              onClick={() => setSortMode(mode)}
-              className={
-                sortMode === mode
-                  ? "shrink-0 px-4 py-2 rounded-full bg-olive-light text-olive text-[12px] font-semibold whitespace-nowrap"
-                  : "shrink-0 px-4 py-2 rounded-full bg-surface text-t-caption text-[12px] border border-line whitespace-nowrap"
-              }
-            >
-              {mode}
-            </button>
-          ))}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-[11px] text-t-caption uppercase tracking-wider">
+            {recipes.length}개 레시피
+          </p>
+          <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+            {(["추천순", "가격순", "칼로리순", "조리시간순"] as SortMode[]).map(
+              (mode) => (
+                <button
+                  key={mode}
+                  onClick={() => setSortMode(mode)}
+                  className={
+                    sortMode === mode
+                      ? "shrink-0 px-3 py-1 rounded-full text-olive text-[11px] font-semibold whitespace-nowrap"
+                      : "shrink-0 px-3 py-1 rounded-full text-t-disabled text-[11px] whitespace-nowrap"
+                  }
+                >
+                  {mode}
+                </button>
+              )
+            )}
+          </div>
         </div>
 
         {/* 레시피 리스트 */}
-        <div className="space-y-2.5 animate-fade-in">
-          {recipes.map((recipe) => (
-            <MealprepCard key={recipe.id} recipe={recipe} />
-          ))}
-        </div>
+        {recipes.length === 0 ? (
+          <p className="text-center py-12 text-[13px] text-t-disabled">
+            해당 조건의 레시피가 없어요
+          </p>
+        ) : (
+          <div className="space-y-2.5 animate-fade-in">
+            {recipes.map((recipe) => (
+              <MealprepCard key={recipe.id} recipe={recipe} />
+            ))}
+          </div>
+        )}
       </main>
       <BottomNav />
     </>
@@ -138,18 +160,32 @@ export default function WeeklyPage() {
 }
 
 function MealprepCard({ recipe }: { recipe: Recipe }) {
+  const isRaw = recipe.prepStyle === "raw";
   return (
     <Link href={`/recipe/${recipe.id}`} className="block">
       <div className="bg-surface rounded-2xl p-4 shadow-sm active:scale-[0.98] transition-transform">
         <div className="flex items-start gap-3">
-          <div className="w-14 h-14 rounded-xl bg-olive-light flex items-center justify-center text-3xl shrink-0">
+          <div
+            className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl shrink-0"
+            style={{ background: isRaw ? "#F0F7FF" : "#EEF2EC" }}
+          >
             {recipe.imageEmoji}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
-              <h3 className="font-serif text-[15px] font-bold text-t truncate">
-                {recipe.title}
-              </h3>
+              <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                <h3 className="font-serif text-[15px] font-bold text-t truncate">
+                  {recipe.title}
+                </h3>
+                {isRaw && (
+                  <span
+                    className="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded"
+                    style={{ background: "#D0E8F5", color: "#3B82C4" }}
+                  >
+                    재료냉동
+                  </span>
+                )}
+              </div>
               {recipe.portionsYield && (
                 <span className="shrink-0 text-[10px] px-2 py-0.5 rounded-full bg-olive text-white font-bold">
                   {recipe.portionsYield}팩

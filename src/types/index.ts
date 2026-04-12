@@ -47,9 +47,22 @@ export interface Recipe {
   estimatedCost: number;
   /** 냉동 밀프랩 카테고리 (weekly 모드일 때 사용) */
   freezerCategory?: FreezerCategory;
+  /** 냉동 방식: 조리 후 냉동 vs 재료만 소분 냉동 후 즉석 조리 */
+  prepStyle?: PrepStyle;
+  /** 예산 등급 (1만원/2만원/3만원) - 스마트 장보기 매칭용 */
+  budgetTier?: BudgetTier;
 }
 
 export type FreezerCategory = "가성비" | "다이어트";
+
+/**
+ * 냉동 밀프랩 조리 방식
+ * - cooked: 완성품 냉동 → 전자레인지 해동 (예: 김치볶음밥, 카레)
+ * - raw: 재료만 소분 냉동 → 즉석 조리 (예: 샤브샤브, 전골, 찌개 재료)
+ */
+export type PrepStyle = "cooked" | "raw";
+
+export type BudgetTier = "1만원" | "2만원" | "3만원";
 
 export type RecipeMode = "fridge" | "shopping" | "weekly";
 
@@ -73,7 +86,7 @@ export interface ShoppingPlan {
   id: string;
   title: string;
   description: string;
-  budgetTier: "1만원" | "2만원" | "3만원";
+  budgetTier: BudgetTier;
   totalCost: number;
   shoppingList: ShoppingItem[];
   portioningGuide: PortionStep[];

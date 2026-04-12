@@ -25,6 +25,7 @@ import { mpB7 } from "./recipes-mp-b7";
 import { mpB8 } from "./recipes-mp-b8";
 import { mpB9 } from "./recipes-mp-b9";
 import { mpB10 } from "./recipes-mp-b10";
+import { mpF1 } from "./recipes-mp-f1";
 import { mpD1 } from "./recipes-mp-d1";
 import { mpD2 } from "./recipes-mp-d2";
 import { mpD3 } from "./recipes-mp-d3";
@@ -33,6 +34,7 @@ import { mpD5 } from "./recipes-mp-d5";
 import { mpD6 } from "./recipes-mp-d6";
 import { mpD7 } from "./recipes-mp-d7";
 import { mpD8 } from "./recipes-mp-d8";
+import { mpF2 } from "./recipes-mp-f2";
 import { rawPrepRecipes } from "./recipes-mp-raw";
 
 /** estimatedCost 기준으로 budgetTier 자동 추론 */
@@ -63,6 +65,7 @@ export const budgetMealprepRecipes: Recipe[] = withDefaults([
   ...mpB8,
   ...mpB9,
   ...mpB10,
+  ...mpF1,
   ...rawPrepRecipes.filter((r) => r.freezerCategory === "가성비"),
 ]);
 
@@ -75,6 +78,7 @@ export const dietMealprepRecipes: Recipe[] = withDefaults([
   ...mpD6,
   ...mpD7,
   ...mpD8,
+  ...mpF2,
   ...rawPrepRecipes.filter((r) => r.freezerCategory === "다이어트"),
 ]);
 

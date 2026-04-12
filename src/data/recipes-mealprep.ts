@@ -23,6 +23,7 @@ import { mpB5 } from "./recipes-mp-b5";
 import { mpB6 } from "./recipes-mp-b6";
 import { mpB7 } from "./recipes-mp-b7";
 import { mpB8 } from "./recipes-mp-b8";
+import { mpB9 } from "./recipes-mp-b9";
 import { mpB10 } from "./recipes-mp-b10";
 import { mpD1 } from "./recipes-mp-d1";
 import { mpD2 } from "./recipes-mp-d2";
@@ -60,6 +61,7 @@ export const budgetMealprepRecipes: Recipe[] = withDefaults([
   ...mpB6,
   ...mpB7,
   ...mpB8,
+  ...mpB9,
   ...mpB10,
   ...rawPrepRecipes.filter((r) => r.freezerCategory === "가성비"),
 ]);

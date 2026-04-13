@@ -244,7 +244,18 @@ function FreezerItemCard({
               {remaining > 0 ? `D-${remaining}` : remaining === 0 ? "D-day" : `D+${-remaining}`}
             </span>
           </div>
-          <p className="text-[15px] font-bold text-t truncate">{item.recipeName}</p>
+          <div className="flex items-center gap-1.5">
+            <p className="text-[15px] font-bold text-t truncate">{item.recipeName}</p>
+            {item.isCustom && (
+              <span className="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded"
+                style={{ background: "#F5F0E8", color: "#8A6A3C" }}>
+                내 레시피
+              </span>
+            )}
+          </div>
+          {item.memo && (
+            <p className="text-[11px] text-t-sub mt-0.5">{item.memo}</p>
+          )}
           <p className="text-[11px] text-t-caption mt-0.5">
             {item.startDate.replace(/-/g, ".")} 시작 · {elapsed}일 경과
           </p>

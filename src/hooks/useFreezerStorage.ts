@@ -10,6 +10,10 @@ export interface FreezerItem {
   totalPacks: number;
   remainingPacks: number;
   freezeLimitDays: number; // 레시피별 냉동 한도 (기본 30일)
+  /** 사용자가 직접 입력한 커스텀 밀프랩 여부 */
+  isCustom?: boolean;
+  /** 커스텀일 때 메모 (예: "엄마 레시피 갈비찜") */
+  memo?: string;
 }
 
 const STORAGE_KEY = "freezer-items-v2";
@@ -116,7 +120,8 @@ export function useFreezerStorage() {
       recipeName: string,
       totalPacks: number,
       startDate: string = todayISO(),
-      freezeLimitDays: number = DEFAULT_LIMIT
+      freezeLimitDays: number = DEFAULT_LIMIT,
+      opts?: { isCustom?: boolean; memo?: string }
     ) => {
       const newItem: FreezerItem = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -126,6 +131,8 @@ export function useFreezerStorage() {
         totalPacks,
         remainingPacks: totalPacks,
         freezeLimitDays,
+        ...(opts?.isCustom && { isCustom: true }),
+        ...(opts?.memo && { memo: opts.memo }),
       };
       const next = [...read(), newItem];
       write(next);

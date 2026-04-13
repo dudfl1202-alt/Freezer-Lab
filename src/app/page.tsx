@@ -95,7 +95,7 @@ export default function Home() {
       <div className="px-5 max-w-lg mx-auto">
         <p className="text-[11px] text-t-caption uppercase tracking-wider mb-2">Daily Tip</p>
         <p className="text-[14px] text-t leading-relaxed">
-          냉동밥은 김이 빠지기 전에 랩으로 감싸야 촉촉하게 유지돼요.
+          밥은 뜨거울 때 바로 소분 용기에 담아 냉동해야 촉촉하게 유지돼요.
           <span className="text-t-caption"> 해동 시 물 1스푼을 뿌려주면 더 좋아요.</span>
         </p>
       </div>

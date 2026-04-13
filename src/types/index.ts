@@ -51,6 +51,8 @@ export interface Recipe {
   prepStyle?: PrepStyle;
   /** 예산 등급 (1만원/2만원/3만원) - 스마트 장보기 매칭용 */
   budgetTier?: BudgetTier;
+  /** 레시피 사진 경로 (예: "/images/recipes/kimchi-friedrice.jpg") */
+  imageUrl?: string;
 }
 
 export type FreezerCategory = "가성비" | "다이어트";

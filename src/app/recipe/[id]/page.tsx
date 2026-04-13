@@ -9,6 +9,7 @@ import AffiliateLink from "@/components/shared/affiliate-link";
 import AffiliateDisclosure from "@/components/shared/affiliate-disclosure";
 import { FreezerTrackerButton } from "@/components/freezer/freezer-tracker";
 import { getRecipeTone } from "@/lib/recipe-tone";
+import RecipeImage from "@/components/shared/recipe-image";
 
 export default function RecipeDetailPage() {
   const params = useParams();
@@ -38,15 +39,20 @@ export default function RecipeDetailPage() {
 
   return (
     <main className="max-w-lg mx-auto pb-12">
+      {/* 히어로 이미지 (있을 때만) */}
+      {recipe.imageUrl && (
+        <RecipeImage recipe={recipe} variant="detail" className="rounded-none" />
+      )}
+
       {/* 컬러 헤더 */}
       <header
         className="px-5 pt-4 pb-10"
-        style={{ background: tone.blockBg }}
+        style={{ background: recipe.imageUrl ? undefined : tone.blockBg }}
       >
         <Link
           href="/"
-          className="text-[13px] inline-block mb-8 font-medium"
-          style={{ color: tone.blockText }}
+          className="text-[13px] inline-block mb-6 font-medium"
+          style={{ color: recipe.imageUrl ? "#6B6B60" : tone.blockText }}
         >
           ← Back
         </Link>

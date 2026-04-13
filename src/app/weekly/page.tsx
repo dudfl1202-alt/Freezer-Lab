@@ -11,6 +11,7 @@ import {
 } from "@/data/recipes-mealprep";
 import { formatPrice, formatTime } from "@/lib/utils";
 import { getRecipeTone } from "@/lib/recipe-tone";
+import RecipeImage from "@/components/shared/recipe-image";
 import { Recipe, FreezerCategory, PrepStyle } from "@/types";
 
 type SortMode = "추천순" | "가격순" | "칼로리순" | "조리시간순";
@@ -212,31 +213,35 @@ function MealprepCard({ recipe }: { recipe: Recipe }) {
         className="rounded-2xl shadow-sm overflow-hidden active:scale-[0.98] transition-transform border border-line"
         style={{ background: "#FFFFFF" }}
       >
-        {/* 컬러 톱 밴드 - 카테고리 표시 */}
-        <div
-          className="px-5 pt-3 pb-2 flex items-center justify-between"
-          style={{ background: tone.blockBg }}
-        >
-          <p
-            className="text-[10px] font-bold uppercase tracking-[0.1em]"
-            style={{ color: tone.blockText }}
+        {/* 이미지 or 컬러 밴드 */}
+        {recipe.imageUrl ? (
+          <RecipeImage recipe={recipe} variant="card" className="rounded-none rounded-t-2xl" />
+        ) : (
+          <div
+            className="px-5 pt-3 pb-2 flex items-center justify-between"
+            style={{ background: tone.blockBg }}
           >
-            {tone.categoryLabel}
-            {tone.subLabel && (
-              <span className="ml-1.5 font-medium opacity-70 normal-case tracking-normal">
-                · {tone.subLabel}
+            <p
+              className="text-[10px] font-bold uppercase tracking-[0.1em]"
+              style={{ color: tone.blockText }}
+            >
+              {tone.categoryLabel}
+              {tone.subLabel && (
+                <span className="ml-1.5 font-medium opacity-70 normal-case tracking-normal">
+                  · {tone.subLabel}
+                </span>
+              )}
+            </p>
+            {recipe.portionsYield && (
+              <span
+                className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                style={{ background: "#FFFFFF", color: tone.blockText }}
+              >
+                {recipe.portionsYield}팩
               </span>
             )}
-          </p>
-          {recipe.portionsYield && (
-            <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-              style={{ background: "#FFFFFF", color: tone.blockText }}
-            >
-              {recipe.portionsYield}팩
-            </span>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* 본문 */}
         <div className="px-5 py-4">

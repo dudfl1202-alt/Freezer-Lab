@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import ToastHost from "@/components/shared/toast-host";
+import SplashScreen from "@/components/shared/splash-screen";
+import LoadingBar from "@/components/shared/loading-bar";
 
 export const metadata: Metadata = {
   title: "프리저랩 - 냉동 밀프랩",
@@ -31,6 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
       </head>
       <body className="antialiased min-h-screen">
+        <SplashScreen />
+        <LoadingBar />
         {children}
         <ToastHost />
       </body>

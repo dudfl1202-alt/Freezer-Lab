@@ -16,16 +16,33 @@ import { Recipe, FreezerCategory, PrepStyle } from "@/types";
 type SortMode = "추천순" | "가격순" | "칼로리순" | "조리시간순";
 type StyleFilter = "all" | PrepStyle;
 
+function matchesSearch(recipe: Recipe, query: string): boolean {
+  if (!query) return true;
+  const q = query.toLowerCase().trim();
+  const text = [
+    recipe.title,
+    recipe.description,
+    ...recipe.ingredients.map((i) => i.name),
+    ...recipe.tags,
+  ].join(" ").toLowerCase();
+  // 띄어쓰기로 나눈 각 키워드가 모두 포함되어야 함
+  return q.split(/\s+/).every((word) => text.includes(word));
+}
+
 export default function WeeklyPage() {
   const [category, setCategory] = useState<FreezerCategory>("가성비");
   const [styleFilter, setStyleFilter] = useState<StyleFilter>("all");
   const [sortMode, setSortMode] = useState<SortMode>("추천순");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const recipes = useMemo(() => {
     const base = category === "가성비" ? budgetMealprepRecipes : dietMealprepRecipes;
     let filtered = base;
     if (styleFilter !== "all") {
       filtered = filtered.filter((r) => r.prepStyle === styleFilter);
+    }
+    if (searchQuery.trim()) {
+      filtered = filtered.filter((r) => matchesSearch(r, searchQuery));
     }
     const sorted = [...filtered];
     switch (sortMode) {
@@ -40,7 +57,7 @@ export default function WeeklyPage() {
       default:
         return sorted;
     }
-  }, [category, styleFilter, sortMode]);
+  }, [category, styleFilter, sortMode, searchQuery]);
 
   return (
     <>
@@ -57,6 +74,33 @@ export default function WeeklyPage() {
             전부 냉동 보관 가능한 레시피{" "}
             <span className="font-bold text-olive">{mealprepStats.total}개</span>
           </p>
+        </div>
+
+        {/* 검색 */}
+        <div className="relative mb-4">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="레시피 검색 (예: 김치볶음밥, 닭가슴살)"
+            className="w-full pl-10 pr-4 py-3 rounded-xl bg-surface border border-line text-[13px]
+                       focus:outline-none focus:border-olive placeholder:text-t-disabled transition-colors"
+          />
+          <svg
+            className="absolute left-3.5 top-1/2 -translate-y-1/2"
+            width="16" height="16" viewBox="0 0 16 16" fill="none"
+          >
+            <circle cx="7" cy="7" r="4.5" stroke="#9C9C90" strokeWidth="1.5" />
+            <path d="M10.5 10.5L14 14" stroke="#9C9C90" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-t-disabled hover:text-t-sub text-sm"
+            >
+              &times;
+            </button>
+          )}
         </div>
 
         {/* 카테고리 탭 (가성비/다이어트) */}

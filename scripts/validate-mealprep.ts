@@ -51,18 +51,18 @@ function allText(r: Recipe): string {
 
 const RULES: IssueRule[] = [
   // ────────────────────────────────────────────
-  // 냉동 부적합 채소 (조리 후 냉동 시 식감 망가짐)
-  // optional: true 이면 조리 직전 추가용이라고 간주하고 통과
+  // 냉동 부적합 채소 (숙주/양상추/오이/깻잎 등)
+  // 어떤 prepStyle이든, optional: false (필수)로 들어있으면 경고
+  // optional: true는 조리 직전 추가용이라고 간주하고 통과
   // ────────────────────────────────────────────
   {
     id: "raw-veg-frozen",
     severity: "error",
     description:
-      "생채소(숙주/양상추/오이/깻잎 등)는 냉동 시 물러집니다. raw prepStyle이거나 조리 직전 추가해야 합니다.",
+      "숙주/양상추/오이/깻잎은 냉동 시 물러집니다. optional: true로 두고 끓일 때 추가하도록 안내해야 합니다.",
     check: (r) => {
-      if (r.prepStyle === "raw") return false;
       const badNames = ["숙주", "양상추", "상추", "오이", "깻잎", "쌈채소"];
-      // optional이 아닌 (필수) 재료에서만 검사
+      // optional이 아닌 (필수) 재료에서만 검사 - 모든 prepStyle 대상
       const hasBadVeg = r.ingredients.some(
         (i) => !i.optional && badNames.some((v) => i.name.includes(v))
       );
